@@ -1589,9 +1589,7 @@ YUI.add('xpathjs-test', function (Y) {
 					["date('2012-01-01') < now()", true],
 					["date('2100-01-02') > now()", true],
 					["now() > today()", true],
-					["now() < today()", false],
-					["today() > 'Mon, 20 Aug 2012 18:01:16 GMT'", true],
-					["today() < 'Tue, 20 Aug 2024 00:00:00 GMT'", true]
+					["now() < today()", false]
 				];
 
 				for(i=0; i<input.length; i++)
@@ -1605,7 +1603,9 @@ YUI.add('xpathjs-test', function (Y) {
 				var result, input, i;
 
 				input = [
-					[". < date('2012-07-24')", doc.getElementById("FunctionDateCase1"), true]
+					[". < date('2012-07-24')", doc.getElementById("FunctionDateCase1"), true],
+					[". < today()", doc.getElementById("FunctionDateCase2"), true],
+					[". > today()", doc.getElementById("FunctionDateCase3"), true]
 				];
 
 				for(i=0; i<input.length; i++)
