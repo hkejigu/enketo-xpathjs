@@ -59,7 +59,7 @@ I strongly recommend for you to take a look at the [**CAVEATS**](https://github.
 Background
 --------
 
-While developing an offline-web application to conduct surveys in areas with problematic Internet connectivity using the JavaRosa/OpenRosa form format, the need arose for a client-side XPath Processor that could be easily extended. Andrej Pavlovic' excellent XPathJS project was chosen due to the very easily readable code and very robust implementation (no bugs were found!) of the DOM Level 3 XPath Processor.
+While developing [Enketo](http://blog.aidwebsolutions.com/tag/enketo/) - an offline-web application to conduct surveys in areas with problematic Internet connectivity using the JavaRosa/OpenRosa form format - the need arose for a client-side XPath Processor that could be easily extended. Andrej Pavlovic' excellent XPathJS project was chosen due to the very easily readable code and very robust implementation (no bugs were found!) of the DOM Level 3 XPath Processor.
 
 By releasing XPathJS_javarosa, we hope to help promote the adoption of a platform with multiple data collection, entry, collation and analysis apps that use an open format and can work together.
 
