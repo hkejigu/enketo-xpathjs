@@ -1,5 +1,9 @@
 /**
- * Copyright (C) 2011 Andrej Pavlovic
+ * Copyright (C) 2012 Martijn van de Rijdt for JavaRosa functions added to XPathJS to make XPathJS_javarosa
+ *
+ * Original copyright notice for XPathJS:
+ *
+ * Copyright (C) 2011 Andrej Pavlovic for XPathJS
  *
  * This file is part of XPathJS.
  *
@@ -975,6 +979,22 @@ XPathJS = (function(){
 							}
 						}
 					}
+					/*** Added DateType here for JavaRosa functions***/
+					else if (right instanceof DateType)
+					{
+						leftValues = left.stringValues();
+						
+						for(i=0; i < leftValues.length; i++)
+						{
+							result = compareOperator(new DateType(leftValues[i].toDate()), right, operator, compareFunction);
+							if (result.toBoolean())
+							{
+								return result;
+							}
+						}
+					}
+
+
 					/**
 					 * If one object to be compared is a node-set and the other is a boolean, then the comparison
 					 * will be true if and only if the result of performing the comparison on the boolean
@@ -1023,6 +1043,20 @@ XPathJS = (function(){
 						for(i=0; i < rightValues.length; i++)
 						{
 							result = compareOperator(left, rightValues[i], operator, compareFunction);
+							if (result.toBoolean())
+							{
+								return result;
+							}
+						}
+					}
+					/*** Added DateType here for JavaRosa functions***/
+					else if (left instanceof DateType)
+					{
+						rightValues = right.stringValues();
+
+						for(i=0; i < rightValues.length; i++)
+						{
+							result = compareOperator(left, new DateType(rightValues[i].toDate()), operator, compareFunction);
 							if (result.toBoolean())
 							{
 								return result;
@@ -1419,7 +1453,8 @@ XPathJS = (function(){
 		BaseType.call(this, value, 'boolean', [
 			'boolean',
 			'string',
-			'number'
+			'number',
+			'date'
 		]);
 	}
 	BooleanType.prototype = new BaseType;
@@ -1439,6 +1474,9 @@ XPathJS = (function(){
 	BooleanType.prototype.toNumber = function() {
 		return (this.value) ? 1 : 0;
 	}
+	BooleanType.prototype.toDate = function(){
+		return null;
+	}
 	
 	NodeSetType = function(value, documentOrder)
 	{
@@ -1446,7 +1484,8 @@ XPathJS = (function(){
 			'boolean',
 			'string',
 			'number',
-			'node-set'
+			'node-set',
+			'date'
 		]);
 		
 		this.docOrder = (documentOrder || 'unsorted');
@@ -1482,6 +1521,11 @@ XPathJS = (function(){
 	}
 	NodeSetType.prototype.toNodeSet = function() {
 		return this.value;
+	}
+	NodeSetType.prototype.toDate = function(){
+		console.log('Nodeset.toDate() going to return:')
+		console.log((new StringType(this.toString())).toDate());
+		return (new StringType(this.toString())).toDate();
 	}
 	NodeSetType.prototype.sortDocumentOrder = function() {
 		switch(this.docOrder)
@@ -1607,7 +1651,8 @@ XPathJS = (function(){
 		BaseType.call(this, value, 'string', [
 			'boolean',
 			'string',
-			'number'
+			'number',
+			'date'
 		]);
 	}
 	StringType.prototype = new BaseType;
@@ -1647,13 +1692,17 @@ XPathJS = (function(){
 		// Invalid number
 		return Number.NaN;
 	}
+	StringType.prototype.toDate = function() {
+		return new Date(this.value);
+	}
 	
 	NumberType = function(value)
 	{
 		BaseType.call(this, value, 'number', [
 			'boolean',
 			'string',
-			'number'
+			'number',
+			'date'
 		]);
 	}
 	NumberType.prototype = new BaseType;
@@ -1681,7 +1730,48 @@ XPathJS = (function(){
 	NumberType.prototype.toNumber = function() {
 		return this.value;
 	}
-	
+	/**
+	 * This is where JavaRosa's date object deviates from the built-in 
+	 * javascript Date object. It instantiates a date based on the amount of days since the 
+	 * epoch (and not milliseconds)
+	 * 
+	 */
+	NumberType.prototype.toDate = function() {
+		return new Date(this.value * (1000 * 60 * 60 * 24) );
+	}
+	/** 
+     * Date type used in JavaRosa functions 
+     **/
+    DateType = function(value)
+    {
+    	BaseType.call(this, value, 'date', [
+    		'date',
+    		'string',
+    		'number',
+    		'boolean'
+    	])
+    }
+
+	DateType.prototype = new BaseType;
+	DateType.constructor = DateType;
+
+	DateType.prototype.toDate = function() {
+		return new Date(this.value);
+	}
+	//maybe the string should be build 'manually' with milliseconds appended to it
+	//more in line with JavaRosa
+	DateType.prototype.toString = function(){
+		return new Date(this.value).toUTCString();
+	}
+	//gets milliseconds since epoch
+	DateType.prototype.toNumber = function(){
+		return ( new Date(this.value).getTime() ) / (1000 * 60 * 60 * 24) ;
+	}
+
+	DateType.prototype.toBoolean = function(){
+		return ( new Date(this.value) != 'Invalid Date' ) ? true : false;
+	}
+
 	/**
 	 * A new exception has been created for exceptions specific to these XPath interfaces.
 	 *
@@ -3825,9 +3915,285 @@ XPathJS = (function(){
 				],
 				
 				ret: 'number'
+			},
+
+			/********************************************************************/	
+			/**** JAVAROSA-specific XPath functions (or XPath 2.0 functions) ****/
+			/********************************************************************/
+
+			sum_jr: {
+				/**
+				 * The JavaRosa version of the sum function is the same as the XPath 1.0 function
+				 * EXCEPT that it evaluates an empty node ('') to 0 instead of NaN.
+				 *
+				 * @see 
+				 * @param {NodeSetType} 
+				 * @return {NumberType}
+				 */
+				fn: function(nodeset)
+				{
+					var i, value
+						sum = 0;
+					;
+					
+					nodeset = nodeset.toNodeSet();
+					
+					for(i = 0; i < nodeset.length; i++)
+					{
+						value = ( nodeStringValue(nodeset[i]) == '' ) ? '0' : nodeStringValue(nodeset[i]);
+						sum += (new StringType(value)).toNumber();
+					}
+					
+					return new NumberType(sum);
+				},
+				
+				args: [
+					{t: 'node-set'}
+				],
+				
+				ret: 'number'
+			},
+
+			selected: {
+				/**
+				 * The selected function returns true or false if the argument
+				 * is included in the space-separated list of selected multiselect values
+				 * 
+				 * @see https://bitbucket.org/javarosa/javarosa/wiki/xform-jr-compat
+				 * @param {ObjectType} object
+				 * @param {StringType} value
+				 * @return {BooleanType}
+				 * 
+				 */
+				fn: function(node, value)
+				{
+					var i, values;
+
+					value = value.toString().trim();
+					values = node.toString();
+					
+					return new BooleanType( (" "+values+" ").indexOf(" "+value+" ") != -1 );
+				},
+
+				args: [
+					{t: 'object'},
+					{t: 'string'}
+				],
+				
+				ret: 'boolean'
+			},
+
+			'count-selected': {
+				/**
+				 * The count-selected function returns the number of multiselect values currently selected
+				 * 
+				 * @see https://bitbucket.org/javarosa/javarosa/wiki/xform-jr-compat
+				 * @param {NodeSetType} nodeset
+				 * @return {NumberType}
+				 * 
+				 */
+				fn: function(nodeset)
+				{
+					var values = [];
+
+					nodeset = nodeset.toNodeSet();
+
+					if (nodeset.length > 0){
+						
+						//only value of first node
+						values = nodeStringValue(nodeset[0]).trim().split(' ');
+						//return new Number(1);
+						return (values.length == 1 && values[0] === "") ? new NumberType(0) : new NumberType(values.length);
+					}
+
+					return new NumberType(0);
+				},
+
+				args: [
+					{t: 'node-set'}
+				],
+
+				ret: 'number'
+			},
+
+			checklist: {
+				/**
+				 * The checklist function returns true if the amount of 'yes' answers (take as true())
+				 * is between min and max inclusive. Min or max may be -1 to indicate 'not applicable'.
+				 * 
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @param {NumberType} min
+				 * @param {NumberType} max
+				 * @param {BaseType} oA, oB, oC etc...
+				 * @return {BooleanType}
+				 * 
+				 */
+
+				fn: function(min, max, oA /*, oB .... */)
+				{
+					var i, j, 
+						trues = 0
+					;
+					min = min.toNumber();
+					max = max.toNumber();
+
+					for (i=2 ; i<arguments.length ; i++)
+					{
+						if (arguments[i] instanceof NodeSetType)
+						{
+							//to allow for a node-set with multiple nodes as an argument
+							//(not sure if this is also the case in javarosa library)
+							for (j=0; j<arguments[i].stringValues().length ; j++)
+							{
+								if (arguments[i].stringValues()[j].toBoolean() === true)
+								{
+									//console.log('boolean string value of '+arguments[i].stringValues()[j]+' is true');
+									trues++;
+								}
+								//else console.log('boolean string value of '+arguments[i].stringValues()[j]+' is false');
+							}
+						}
+						else if (arguments[i].toBoolean() === true)
+						{
+							//console.log('boolean value of '+arguments[i]+' evaluated as true');
+							trues++;
+						}
+						//else console.log('boolean value of '+arguments[i]+' evaluated as false');
+					}
+					//console.log('trues: '+trues+' min: '+min+' max: '+max);
+
+					return new BooleanType((min < 0 || trues >= min) && (max < 0 || trues <= max));
+				},
+
+				args: [
+					{t: 'number'},
+					{t: 'number'},
+					{t: 'object'},
+					{t: 'object', r: false, rep: true}
+				],
+
+				ret: 'boolean'
+			},
+
+			'boolean-from-string': {
+				/**
+				 * The boolean-from-string function returns true if the string is 'true' or '1'. 
+				 * Note that a number is cast to a string.
+				 * 
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @param {StrType} str
+				 * @return {BooleanType}
+				 * 
+				 */
+				fn: function(str)
+				{
+					return new BooleanType(str.toString().toLowerCase() === 'true' || String(str) === '1');
+				},
+
+				args: [
+					{t: 'string'}
+				],
+
+				ret: 'boolean'
+			},
+
+			'if': {
+
+				fn: function(cond, a, b)
+				{
+					//console.log('type: '+cond.type);
+					//probably needs to be changed (bug?: emptyNode.toBoolean = true, but should be false)
+					//if (cond instanceof NodeSetType){
+						//cond = cond.toString();
+					//	console.log('cond:');
+					//	console.log(cond);
+					//}
+					return ( cond.toBoolean() ? a : b );
+				},
+
+				args: [
+					{t: 'object'},
+					{t: 'object'},
+					{t: 'object'}
+				],
+
+				ret: 'object'
+
+			},
+
+			'date': {
+
+				fn: function(obj)
+				{
+					//console.log('typeof object: '+typeof obj);
+					//console.log(obj);
+					//if (obj instanceOf NumberType){
+					//	return new DateType(new Date(obj));
+					//}
+					//else 
+					return new DateType(obj.toDate());
+				},
+
+				args: [
+					{t: 'object'}
+				],
+
+				ret: 'string'
+			},
+
+			today: {
+				
+				fn: function()
+				{
+					var today = new Date();
+					return new DateType(new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+				},
+
+				ret: 'string'
+			},
+
+			now: {
+				/**
+				 * The now function returns the date in seconds between now and the epoch.
+				 * 
+				 * @see https://bitbucket.org/javarosa/javarosa/wiki/xform-jr-compat
+				 * @return {NumberType}
+				 * 
+				 */
+
+				fn: function()
+				{
+					return new DateType(new Date());
+				},
+
+				ret: 'string'
+			},
+
+
+			regex: {
+
+				fn: function(obj, expr)
+				{
+					var value, patt;
+
+					value = obj.toString();
+
+					patt = new RegExp(expr);
+
+					return new BooleanType(patt.test(value));
+				},
+
+				args: [
+					{t: 'object'},
+					{t: 'string'}
+				],
+
+				ret: 'boolean'
+
 			}
+
 		}
-	};
+	}
 	
 	/**
 	 * Evaluate parsed expression tree.

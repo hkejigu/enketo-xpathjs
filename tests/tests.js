@@ -1,4 +1,19 @@
 /**
+ * Copyright (C) 2012 Martijn van de Rijdt for code added to XPathJS to make XPathJS_javarosa
+ *
+ * XPathJS_javarosa code added to XPathJS is free software: you can redistribute it and/or modify it under
+ * the terms of the GNU Affero General Public License as published by the Free
+ * Software Foundation, version 3 of the License.
+ *
+ * XPathJS_javarosa code added to XPathJS is distributed in the hope that it will be useful, but WITHOUT ANY
+ * WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS FOR
+ * A PARTICULAR PURPOSE. See the GNU Affero General Public License for more
+ * details.
+ *
+ * You should have received a copy of the GNU Affero General Public License along
+ * with this program. If not, see <http://www.gnu.org/licenses/>.
+ *
+ *
  * Copyright (C) 2011 Andrej Pavlovic
  *
  * This file is part of XPathJS.
@@ -1084,7 +1099,8 @@ YUI.add('xpathjs-test', function (Y) {
 				}
 				
 				input = [
-					["sum(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple')]
+					["sum(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple')],
+					["sum(*)", doc.getElementById('FunctionSumCaseJavarosa')]
 				];
 				
 				for(i=0; i<input.length; i++)
@@ -1187,7 +1203,7 @@ YUI.add('xpathjs-test', function (Y) {
 				documentEvaluate("round()", doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
 			}
 		});
-		
+	
 		tests.FunctionBooleanCase = new Y.Test.Case({
 			
 			name: "Boolean Function Tests",
@@ -1237,6 +1253,7 @@ YUI.add('xpathjs-test', function (Y) {
 				
 				result = documentEvaluate("boolean('')", doc, null, win.XPathResult.BOOLEAN_TYPE, null);
 				Y.Assert.areSame(false, result.booleanValue);
+
 			},
 			
 			testBooleanBoolean: function() {
@@ -1263,6 +1280,9 @@ YUI.add('xpathjs-test', function (Y) {
 				
 				result = documentEvaluate("boolean(0.1)", doc, null, win.XPathResult.BOOLEAN_TYPE, null);
 				Y.Assert.areSame(true, result.booleanValue);
+
+				result = documentEvaluate("boolean('0.0001')", doc, null, win.XPathResult.BOOLEAN_TYPE, null);
+				Y.Assert.areSame(true, result.booleanValue);
 				
 				result = documentEvaluate("boolean(0)", doc, null, win.XPathResult.BOOLEAN_TYPE, null);
 				Y.Assert.areSame(false, result.booleanValue);
@@ -1282,6 +1302,12 @@ YUI.add('xpathjs-test', function (Y) {
 				
 				result = documentEvaluate("boolean(/asdf)", doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
 				Y.Assert.areSame(false, result.booleanValue);
+
+				result = documentEvaluate("boolean(self::node())", doc.getElementById('FunctionBooleanEmptyNode'), helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+				Y.Assert.areSame(true, result.booleanValue);
+
+				//result = documentEvaluate("boolean(//xhtml:article)", doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+				//Y.Assert.areSame(false, result.booleanValue);
 			},
 			
 			testBooleanExceptionNotEnoughArgs: function() {
@@ -1351,6 +1377,262 @@ YUI.add('xpathjs-test', function (Y) {
 			}
 		});
 		
+		tests.FunctionJavarosaCase = new Y.Test.Case({
+			
+			name: "JavaRosa Function Tests",
+			/********************************* JavaRosa / XPath 2.0 functions *******************************/
+
+//			testSumJR: function() {
+//				var result, input, i;
+//				
+//				input = [
+//					["sum_jr(self::*)", doc.getElementById('FunctionNumberCaseNumber'), 123],
+//					["sum_jr(*)", doc.getElementById('FunctionNumberCaseNumberMultiple'), 100],
+//					["sum_jr(*)", doc.getElementById('FunctionSumCaseJavarosa'), 5]
+//				];
+//				
+//				for(i=0; i<input.length; i++)
+//				{
+//					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
+//					Y.Assert.areSame(input[i][2], result.numberValue);
+//				}
+//				
+//				input = [
+//					["sum_jr(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple')]
+//				];
+//				
+//				for(i=0; i<input.length; i++)
+//				{
+//					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
+//					Y.Assert.isTypeOf("number", result.numberValue);
+//					Y.Assert.isNaN(result.numberValue);
+//				}
+//			},
+
+			testSelected: function(){
+				var result, input, i;
+
+				input = [
+					["selected(self::node(), '')", doc.getElementById('FunctionSelectedCaseEmpty'), true],
+					["selected(self::node(), 'ab')", doc.getElementById('FunctionSelectedCaseEmpty'), false],
+					["selected(self::node(), 'bc')", doc.getElementById('FunctionSelectedCaseSingle'), false],
+					["selected(self::node(), 'ab')", doc.getElementById('FunctionSelectedCaseSingle'), true],
+					["selected(self::node(), 'kl')", doc.getElementById('FunctionSelectedCaseMultiple'), false],
+					["selected(self::node(), 'ab')", doc.getElementById('FunctionSelectedCaseMultiple'), true],
+					["selected(self::node(), 'cd')", doc.getElementById('FunctionSelectedCaseMultiple'), true],
+					["selected(self::node(), 'ij')", doc.getElementById('FunctionSelectedCaseMultiple'), false],
+					["selected('apple baby crimson', 'apple')", doc, true],
+					["selected('apple baby crimson', 'baby')", doc, true],
+					["selected('apple baby crimson', 'crimson')", doc, true],
+					["selected('apple baby crimson', '  baby  ')", doc, true],
+					["selected('apple baby crimson', 'babby')", doc, false],
+					["selected('apple baby crimson', 'bab')", doc, false],
+					["selected('apple', 'apple')", doc, true],
+					["selected('apple', 'ovoid')", doc, false],
+					["selected('', 'apple')", doc, false]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.booleanValue);
+				}
+			},
+
+			testCountSelected: function(){
+				var result, input, i;
+
+				input = [
+					["count-selected(self::node())", doc.getElementById('FunctionSelectedCaseEmpty'), 0],
+					["count-selected(self::node())", doc.getElementById('FunctionSelectedCaseSingle'), 1],
+					["count-selected(self::node())", doc.getElementById('FunctionSelectedCaseMultiple'), 4]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.numberValue);
+				}
+			},
+
+			testChecklist: function(){
+				var result, input, i;
+
+				input = [
+					["checklist(-1, 2, 2>1)", doc, true],
+					["checklist(-1, 2, 1=1, 2=2, 3=3)", doc, false],
+					["checklist(1, 2, 1=1, 2=2, 3=3)", doc, false],
+					["checklist(1, 1, 1=1)", doc, true],
+					["checklist(2, 2, * )", doc.getElementById('FunctionChecklistCase'), true],
+					["checklist(-1, 2, self::node())", doc.getElementById('FunctionChecklistCaseEmpty'), true],
+					["checklist(1, 2, self::node())", doc.getElementById('FunctionChecklistCaseEmpty'), false],
+					["checklist(1, 1, true(), false(), false())", doc, true]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.booleanValue);
+				}
+
+			},
+
+			testBooleanFromString: function(){
+				var result, input, i;
+
+				input = [
+					["boolean-from-string(1)", doc, true],
+					["boolean-from-string(0)", doc, false],
+					["boolean-from-string('1')", doc, true],
+					["boolean-from-string('2')", doc, false],
+					["boolean-from-string('0')", doc, false],
+					["boolean-from-string('true')", doc, true],
+					["boolean-from-string('false')", doc, false],
+					["boolean-from-string('whatever')", doc, false],
+					["boolean-from-string(1.0)", doc, true],
+					["boolean-from-string(1.0001)", doc, false],
+					["boolean-from-string(true())", doc, true]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], doc, null, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.booleanValue);
+				}
+			},
+
+			testIf: function(){
+				var result, input, i;
+
+				input = [
+					["if(true(), 5, 'abc')", doc, "5"],
+					["if(false(), 5, 'abc')", doc, "abc"],
+					["if(6 > 7, 5, 'abc')", doc, "abc"],
+					["if('', 5, 'abc')", doc, "abc"],
+					["if(self::node(), 'exists', 'does not exist')", doc.getElementById('FunctionChecklistCaseEmpty'), 'exists']
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.stringValue);
+				}
+			},
+
+			testRegEx: function(){
+				var result, input, i;
+
+				input = [
+					["regex('12345','[0-9]+')", doc, true],
+					["regex('abcde','[0-9]+')", doc, false]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.booleanValue);
+				}
+			},
+
+			testContextualAndAbsolute: function(){
+				var result, input, i;
+
+				input = [
+					["(. >= 122)", doc.getElementById('FunctionNumberCaseNumber'), true],
+					["(. < //xhtml:div[@id='FunctionNumberCaseNumber'])", doc.getElementById('FunctionChecklistCase0'), true],
+					["(. > /xhtml:html/xhtml:body/xhtml:div[@id='FunctionNumberCase']/xhtml:div[@id='FunctionNumberCaseNumber'])", doc.getElementById('FunctionChecklistCase0'), false],
+					["(//xhtml:div[@id='FunctionNumberCaseNumber'] >= 122)", doc.getElementById('XPathExpressionEvaluateCase'), true]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.booleanValue);
+				}
+			},
+
+			testDatesNumber: function(){
+				var result, input, i;
+
+				input = [
+					["number(date('1970-01-01'))", 0],
+					["number(date('1970-01-02'))", 1],
+					["number(date('1969-12-31'))", -1],
+					["number(date('2008-09-05'))", 14127],
+					["number(date('1941-12-07'))", -10252]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.areSame(input[i][1], result.numberValue);
+				}
+			},
+
+			testDatesBoolean: function(){
+				var result, input, i;
+
+				input = [
+					["date('2001-12-26') > date('2001-12-25')" , true],
+					["date('1969-07-20') < date('1969-07-21')" , true],
+					["date('2004-05-01') = date('2004-05-01')" , true],
+					["true() != date('1999-09-09')" , false],
+					["date(0) = date('1970-01-01')", true],
+					//["date(6.5)", "date('1970-01-07')"],
+					["date(1) = date('1970-01-02')", true],
+					["date(-1) = date('1969-12-31')", true],
+					["date(14127) = date('2008-09-05')", true],
+					["date(-10252) = date('1941-12-07')", true],
+					["date(date('1989-11-09')) = date('1989-11-09')", true],
+					["date('2012-01-01') < today()", true],
+					["date('2100-01-02') > today()", true],
+					["date('2012-01-01') < now()", true],
+					["date('2100-01-02') > now()", true],
+					["now() > today()", true],
+					["now() < today()", false]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][1], result.booleanValue);
+				}
+			},
+
+			testDatesNode: function(){
+				var result, input, i;
+
+				input = [
+					[". < date('2012-07-24')", doc.getElementById("FunctionDateCase1"), true]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.booleanValue);
+				}
+			},
+			
+			testDateExceptionNotValidDate: function() {
+				var result, input, i;
+
+				input = [
+					"date('1983-09-31')",
+					"date('not a date')",
+					"date(true())"
+					//"date(convertible())"
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					documentEvaluate(input[i], doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+				}
+			}
+
+			/**********************************************************************************************/
+
+		});
+
 		tests.FunctionNodesetCase = new Y.Test.Case({
 			
 			name : "XPathExpression.Evaluate Tests",
@@ -1436,7 +1718,18 @@ YUI.add('xpathjs-test', function (Y) {
 				{
 					result = documentEvaluate(input[i][0], doc.getElementById('testFunctionNodeset2'), helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
 					Y.Assert.areSame(input[i][1], result.numberValue);
+				}	
+				/*
+				input = [
+					["count(.)", doc.getElementsByName('##########'),1]
+				];
+				
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], inpug[i][1], helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.numberValue);
 				}
+				*/
 			},
 			
 			testCountExceptionTooManyArgs: function() {
@@ -4498,6 +4791,7 @@ YUI.add('xpathjs-test', function (Y) {
 		suite.add(tests.FunctionNumberCase);
 		suite.add(tests.FunctionStringCase);
 		suite.add(tests.FunctionNodesetCase);
+		suite.add(tests.FunctionJavarosaCase);
 		suite.add(tests.NumberOperatorCase);
 		suite.add(tests.AndOrOperatorCase);
 		suite.add(tests.XPathExpressionEvaluateCase);

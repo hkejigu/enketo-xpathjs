@@ -66,6 +66,21 @@ if ($serve_xml)
 				<p>3</p>
 				<p>4</p>
 			</div>
+
+			<div id="testFunctionNodeset3">
+				<div>
+					<p>1</p>
+				</div>
+				<div>
+					<p id="testFunctionNodeset3NodeP">2</p>
+				</div>
+				<div>
+					<p>3</p>
+				</div>
+				<div>
+					<p>4</p>
+				</div>
+			</div>
 			
 			<div id="testFunctionNodesetElement">aaa</div>
 			<div id="testFunctionNodesetElementPrefix"><ev:div2></ev:div2></div>
@@ -121,6 +136,37 @@ if ($serve_xml)
 				<div id="testContextNodeParameterNamespace" xmlns:asdf="http://some-namespace/"></div>
 			</div>
 		</div>
+
+		<!-- **** JavaRosa Functions **** -->
+		<div id="FunctionBooleanEmptyNode">
+			<div></div>
+		</div>
+
+		<div id="FunctionSelectedCase">
+			<div id="FunctionSelectedCaseEmpty"></div>
+			<div id="FunctionSelectedCaseSingle">ab</div>
+			<div id="FunctionSelectedCaseMultiple">ab cd ef gh</div>
+			<did id="FunctionSelectedCaseMultiple">ij</div>
+		</div>
+
+		<div id="FunctionSumCaseJavarosa">
+			<div>-10</div>
+			<div>15</div>
+			<div></div>
+		</div>
+
+		<div id="FunctionChecklistCase">
+			<div id="FunctionChecklistCaseNo">no</div>
+			<div id="FunctionChecklistCaseEmpty"></div>
+			<div id="FunctionChecklistCase0">0</div>
+		</div>
+
+		<div id="FunctionDate">
+			<div id="FunctionDateCase1">2012-07-23</div>
+		</div>
+
+		<!-- *****************************-->
+
 		
 		<div id="StepAxisCase">
 			
