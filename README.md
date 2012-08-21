@@ -51,7 +51,7 @@ Getting Started
 
 Take a look at some [working examples](http://www.pokret.org/xpathjs/examples/) to get a better idea of how to use XPathJS.
 
-Note that JavaRosa [deviates from the XPath spec in a few ways](http://https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviates deal with core XPath 1.0 functions, and will eventually dissappear, no workarounds have been introduced in this fork to mimic the deviated behaviour. 
+Note that JavaRosa [deviates from the XPath spec in a few ways](http://https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (FYI, I may provide some temporary workarounds in Enketo by adjusting the expressions before sending them to this processor.)
 
 I strongly recommend for you to take a look at the [**CAVEATS**](https://github.com/andrejpavlovic/xpathjs/blob/master/CAVEATS.md) document to get a better understanding of XPathJS limitations.
 
