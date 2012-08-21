@@ -912,7 +912,10 @@ XPathJS = (function(){
 				rightValues,
 				result
 			;
-			
+//			console.debug('right:');
+//			console.debug(right);
+//			console.debug('left:');
+//			console.debug(left);
 			if (left instanceof NodeSetType)
 			{
 				if (right instanceof NodeSetType)
@@ -960,6 +963,33 @@ XPathJS = (function(){
 							}
 						}
 					}
+					/** 
+					 * JavaRosa addition:
+					 * Check whether string is a date object or a datestring. A datestring is converted to an
+					 * instance of DateType. Note that we've already checked for numbers and that DateType is basically
+					 * just the native JavaScript Date object. So any string, except a number string, that can convert to 
+					 * a valid date is considered a date string. It is safe enough hopefully....
+					 */
+					else if (right instanceof DateType || (right instanceof StringType && right.isDateString()))
+					{
+						if (right instanceof StringType)
+						{
+							//console.debug('found right date string: '+right+' and will convert to a Date object');
+							right = new DateType(right);
+						} 
+						//console.debug('found right date type: '+right);
+
+						leftValues = left.stringValues();
+						
+						for(i=0; i < leftValues.length; i++)
+						{
+							result = compareOperator(new DateType(leftValues[i].toDate()), right, operator, compareFunction);
+							if (result.toBoolean())
+							{
+								return result;
+							}
+						}
+					}
 					/**
 					 * If one object to be compared is a node-set and the other is a string, then the
 					 * comparison will be true if and only if there is a node in the node-set such
@@ -979,22 +1009,6 @@ XPathJS = (function(){
 							}
 						}
 					}
-					/*** Added DateType here for JavaRosa functions***/
-					else if (right instanceof DateType)
-					{
-						leftValues = left.stringValues();
-						
-						for(i=0; i < leftValues.length; i++)
-						{
-							result = compareOperator(new DateType(leftValues[i].toDate()), right, operator, compareFunction);
-							if (result.toBoolean())
-							{
-								return result;
-							}
-						}
-					}
-
-
 					/**
 					 * If one object to be compared is a node-set and the other is a boolean, then the comparison
 					 * will be true if and only if the result of performing the comparison on the boolean
@@ -1030,6 +1044,32 @@ XPathJS = (function(){
 							}
 						}
 					}
+					/** JavaRosa addition:
+					 * If one object to be compared is a date object or a datestring....etc. A datestring is converted to an
+					 * instance of DateType. Note that we've already checked for numbers and that DateType is basically
+					 * just the native JavaScript Date object. So any string, except a number string, that can convert to 
+					 * a valid date is considered a date string. It is safe enough hopefully...
+					 */
+					else if (left instanceof DateType || (left instanceof StringType && left.isDateString())) 
+					{
+						if (left instanceof StringType)
+						{
+							//console.debug('found left date string: '+left.value+' and will convert to a Date object');
+							left = new DateType(left);
+						} 
+						//console.debug('found date type: '+left.value);
+
+						rightValues = right.stringValues();
+
+						for(i=0; i < rightValues.length; i++)
+						{
+							result = compareOperator(left, new DateType(rightValues[i].toDate()), operator, compareFunction);
+							if (result.toBoolean())
+							{
+								return result;
+							}
+						}
+					}
 					/**
 					 * If one object to be compared is a node-set and the other is a string, then the
 					 * comparison will be true if and only if there is a node in the node-set such
@@ -1043,20 +1083,6 @@ XPathJS = (function(){
 						for(i=0; i < rightValues.length; i++)
 						{
 							result = compareOperator(left, rightValues[i], operator, compareFunction);
-							if (result.toBoolean())
-							{
-								return result;
-							}
-						}
-					}
-					/*** Added DateType here for JavaRosa functions***/
-					else if (left instanceof DateType)
-					{
-						rightValues = right.stringValues();
-
-						for(i=0; i < rightValues.length; i++)
-						{
-							result = compareOperator(left, new DateType(rightValues[i].toDate()), operator, compareFunction);
 							if (result.toBoolean())
 							{
 								return result;
@@ -1438,6 +1464,10 @@ XPathJS = (function(){
 		toNodeSet: function() {
 			throw new Error('Unable to convert "' + this.type + '" to "node-set".');
 		},
+
+		toDate: function() {
+			throw new Error('Unable to convert "' + this.type + '" to "date".');
+		},
 		
 		/**
 		 * Check if this type can be converted to a particular javascript type.
@@ -1523,8 +1553,8 @@ XPathJS = (function(){
 		return this.value;
 	}
 	NodeSetType.prototype.toDate = function(){
-		console.log('Nodeset.toDate() going to return:')
-		console.log((new StringType(this.toString())).toDate());
+		//console.log('Nodeset.toDate() going to return:')
+		//console.log((new StringType(this.toString())).toDate());
 		return (new StringType(this.toString())).toDate();
 	}
 	NodeSetType.prototype.sortDocumentOrder = function() {
@@ -1634,13 +1664,23 @@ XPathJS = (function(){
 	
 	NodeSetType.prototype.stringValues = function()
 	{
-		var i,
+		var i, obj,
 			values = []
 		;
 		
 		for(i=0; i < this.value.length; i++)
 		{
-			values.push(new StringType(nodeStringValue(this.value[i])));
+			//seems like an ugly hack, original commented out below
+			obj = new StringType(nodeStringValue(this.value[i]));
+			if (obj.isDateString()){
+				//console.debug('obj:');
+				//console.debug(obj);
+				obj = new DateType(obj.value);
+				//console.debug('converted obj:');
+				//console.debug(obj);
+			} 
+			values.push(obj);
+			//values.push(new StringType(nodeStringValue(this.value[i])));
 		}
 		
 		return values;
@@ -1694,6 +1734,31 @@ XPathJS = (function(){
 	}
 	StringType.prototype.toDate = function() {
 		return new Date(this.value);
+	}
+	/**
+	 * Test whether the value of a String is (probably a date string)
+	 * It seems like a bit of a hack (and inefficient because it is called for all strings)
+	 * but not sure how else to do this.
+	 * Note that "'4'" and '"4'" can be parse as valid dates.
+	 * 
+	 * @return {Boolean} 
+	 */
+	StringType.prototype.isDateString = function(){	
+		if (!isNaN(this.value)){
+			return false;
+		}
+		if (isNaN(Date.parse(this.value))){
+			return false;
+		}
+//		if ( /\'[0-9.-]*\'/.test(this.value) === true){
+//			console.debug('returning false');
+//			return false;
+//		} 
+//		if ( /\"[0-9.-]*\"/.test(this.value) === true){
+//			return false;
+//		}
+		console.debug('found string value that passes check for datestringiness: '+this.value);
+		return true;
 	}
 	
 	NumberType = function(value)
@@ -4602,8 +4667,7 @@ XPathJS = (function(){
 	
 	return module;
 	
-})();
-XPathJS._parser = (function(){
+})();XPathJS._parser = (function(){
   /*
    * Generated by PEG.js 0.7.0.
    *

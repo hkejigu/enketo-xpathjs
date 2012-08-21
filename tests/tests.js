@@ -1588,8 +1588,10 @@ YUI.add('xpathjs-test', function (Y) {
 					["date('2100-01-02') > today()", true],
 					["date('2012-01-01') < now()", true],
 					["date('2100-01-02') > now()", true],
-					["now() > today()", true],
-					["now() < today()", false]
+					["now() > today()", true]
+					//returns false if strings are compared but true if dates are compared
+					//but probably doesn't work because of the namespaces
+					//["//FunctionDateCase2 > //FunctionDateCase3", true]
 				];
 
 				for(i=0; i<input.length; i++)
@@ -1604,8 +1606,8 @@ YUI.add('xpathjs-test', function (Y) {
 
 				input = [
 					[". < date('2012-07-24')", doc.getElementById("FunctionDateCase1"), true],
-					[". < today()", doc.getElementById("FunctionDateCase2"), true],
-					[". > today()", doc.getElementById("FunctionDateCase3"), true]
+					[". < 'Mon, 20 Aug 2012 00:00:00 GMT'", doc.getElementById("FunctionDateCase1"), true],
+					[". > 'Mon, 02 Jul 2012 00:00:00 GMT'", doc.getElementById("FunctionDateCase1"), true]
 				];
 
 				for(i=0; i<input.length; i++)
