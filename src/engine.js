@@ -4211,7 +4211,7 @@ XPathJS = (function(){
 				fn: function()
 				{
 					var today = new Date();
-					return new DateType(new Date(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+					return new DateType(new Date(today.getFullYear(), today.getMonth(), today.getDate()));
 				},
 
 				ret: 'string'
