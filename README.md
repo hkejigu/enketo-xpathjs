@@ -14,7 +14,7 @@ Features
   * No external dependencies, include just a single .js file
   * Regression tested against [hundreds of unit test cases](http://projects.aidwebsolutions.com/xpathjs_javarosa/tests/).
   * Works in pages served as both, _text/html_ and _application/xhtml+xml_ content types.
-  * The core is [Benchmarked](http://www.pokret.org/xpathjs/benchmark/) against other XPath implementations.
+  * The core is [benchmarked](http://www.pokret.org/xpathjs/benchmark/) against other XPath implementations.
 
 Getting Started
 --------
@@ -51,7 +51,7 @@ Getting Started
 
 Take a look at some [working examples](http://www.pokret.org/xpathjs/examples/) to get a better idea of how to use XPathJS.
 
-Note that JavaRosa [deviates from the XPath spec in a few ways](http://https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (Enketo includes a workaround for issue #3 in the linked doc that adjusts an expression before sending it to the XPath evaluator, so it can easily be removed in the future and the Evaluator stays 'pure'.)
+Note that JavaRosa [deviates from the XPath spec in a few ways](http://https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (Enketo includes a workaround for the absolute-paths-within-repeats issue that adjusts an expression before sending it to the XPath evaluator. This way it can easily be removed in the future and the Evaluator stays 'pure'.)
 
 I strongly recommend for you to take a look at the [**CAVEATS**](https://github.com/andrejpavlovic/xpathjs/blob/master/CAVEATS.md) document to get a better understanding of XPathJS limitations.
 
