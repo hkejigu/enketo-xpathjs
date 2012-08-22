@@ -51,7 +51,7 @@ Getting Started
 
 Take a look at some [working examples](http://www.pokret.org/xpathjs/examples/) to get a better idea of how to use XPathJS.
 
-Note that JavaRosa [deviates from the XPath spec in a few ways](http://https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (FYI, I may provide some temporary workarounds in Enketo by adjusting the expressions before sending them to this processor.)
+Note that JavaRosa [deviates from the XPath spec in a few ways](http://https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (Enketo includes a workaround for issue #3 in the linked doc that adjusts an expression before sending it to the XPath evaluator, so it can easily be removed in the future and the Evaluator stays 'pure'.)
 
 I strongly recommend for you to take a look at the [**CAVEATS**](https://github.com/andrejpavlovic/xpathjs/blob/master/CAVEATS.md) document to get a better understanding of XPathJS limitations.
 
@@ -59,9 +59,9 @@ I strongly recommend for you to take a look at the [**CAVEATS**](https://github.
 Background
 --------
 
-While developing [Enketo](http://blog.aidwebsolutions.com/tag/enketo/) - an offline-web application to conduct surveys in areas with problematic Internet connectivity using the JavaRosa/OpenRosa form format - the need arose for a client-side XPath Processor that could be easily extended. Andrej Pavlovic' excellent XPathJS project was chosen due to the very easily readable code and very robust implementation (no bugs were found!) of the DOM Level 3 XPath Processor.
+While developing [Enketo](http://blog.aidwebsolutions.com/tag/enketo/) - an offline-web application to conduct surveys in areas with problematic Internet connectivity using the JavaRosa/OpenRosa form format - the need arose for a client-side XPath Processor that could be easily extended. Andrej Pavlovic' excellent XPathJS project was chosen due to the very easily readable code and seemingly robust implementation (and indeed no bugs were found!!) of the DOM Level 3 XPath Processor.
 
-By releasing XPathJS_javarosa, we hope to help promote the adoption of a platform with multiple data collection, entry, collation and analysis apps that use an open format and can work together.
+I hope this project helps to promote the adoption of a platform with multiple data collection, entry, collation and analysis apps that use an open format and can work together.
 
 Development
 --------
