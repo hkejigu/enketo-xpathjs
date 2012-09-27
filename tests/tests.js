@@ -1616,20 +1616,26 @@ YUI.add('xpathjs-test', function (Y) {
 				}
 			},
 			
-			testDateExceptionNotValidDate: function() {
+			testDatesNotValid: function() {
 				var result, input, i;
 
 				input = [
-					"date('1983-09-31')",
-					"date('not a date')",
-					"date(true())"
+					//"date('1983-09-31')",
+					"date('not a date')"
+					//"date(true())"
 					//"date(convertible())"
 				];
 
 				for(i=0; i<input.length; i++)
 				{
-					documentEvaluate(input[i], doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					result = documentEvaluate(input[i], doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(false, result.booleanValue);
 				}
+			},
+
+			testUuid: function(){
+				var result = documentEvaluate('uuid()', doc, null, win.XPathResult.STRING_TYPE);
+				Y.Assert.areSame(36, result.stringValue.length);
 			}
 
 			/**********************************************************************************************/
