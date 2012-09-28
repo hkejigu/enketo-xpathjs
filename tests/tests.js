@@ -1635,7 +1635,7 @@ YUI.add('xpathjs-test', function (Y) {
 
 			testUuid: function(){
 				var result = documentEvaluate('uuid()', doc, null, win.XPathResult.STRING_TYPE);
-				Y.Assert.areSame(36, result.stringValue.length);
+				Y.Assert.areSame(32, result.stringValue.length);
 			}
 
 			/**********************************************************************************************/
