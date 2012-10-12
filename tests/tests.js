@@ -1677,6 +1677,14 @@ YUI.add('xpathjs-test', function (Y) {
 					result = documentEvaluate(input[i][0], doc, null, win.XPathResult.STRING_TYPE, null);
 					Y.Assert.areSame(input[i][1], result.stringValue, "Values should be the same. " + input[i][0]);
 				}
+			},
+
+			testRandom: function(){
+
+				result = documentEvaluate('random()', doc, null, win.XPathResult.NUMBER_TYPE, null);
+				console.debug('random number: '+result.numberValue);
+				Y.assert(/0\.[0-9]{15}/.test(result.numberValue), "random number should pass Regular Expression test");
+
 			}
 			
 

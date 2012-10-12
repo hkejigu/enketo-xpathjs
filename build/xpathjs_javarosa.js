@@ -4341,6 +4341,23 @@ XPathJS = (function(){
 				],
 				
 				ret: 'string'
+			},
+
+			random: {
+				/**
+				 * The random function returns a random number between 0.0 (inclusive) and 1.0 (exclusive).
+				 * 
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @return {NumberType}
+				 */
+				fn: function()
+				{
+
+					return new NumberType(Math.random().toPrecision(15))
+				
+				},
+				
+				ret: 'number'
 			}
 		}
 	}
