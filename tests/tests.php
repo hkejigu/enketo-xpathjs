@@ -172,6 +172,18 @@ if ($serve_xml)
 			<div id="FunctionDateCase3">Wed, 08 Aug 2012 00:00:00 GMT</div>
 		</div>
 
+		<div id="FunctionMinCase">
+			<div>5</div>
+			<div>15</div>
+			<div></div>
+		</div>
+
+		<div id="FunctionMaxCase">
+			<div>-5</div>
+			<div>-15</div>
+			<div></div>
+		</div>
+
 		<!-- *****************************-->
 
 		

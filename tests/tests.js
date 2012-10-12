@@ -1682,9 +1682,64 @@ YUI.add('xpathjs-test', function (Y) {
 			testRandom: function(){
 
 				result = documentEvaluate('random()', doc, null, win.XPathResult.NUMBER_TYPE, null);
-				console.debug('random number: '+result.numberValue);
 				Y.assert(/0\.[0-9]{15}/.test(result.numberValue), "random number should pass Regular Expression test");
 
+			},
+
+			testMin: function() {
+				var result, input, i;
+				
+				input = [
+					["min(self::*)", doc.getElementById('FunctionNumberCaseNumber'), 123],
+					["min(*)", doc.getElementById('FunctionNumberCaseNumberMultiple'), -10],
+					["min(*)", doc.getElementById('FunctionSumCaseJavarosa'), -10],
+					["min(*)", doc.getElementById('FunctionMinCase'), 5]
+				];
+				
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.numberValue);
+				}
+				
+				input = [
+					["min(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple')]
+				];
+				
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.isTypeOf("number", result.numberValue);
+					Y.Assert.isNaN(result.numberValue);
+				}
+			},
+
+			testMax: function() {
+				var result, input, i;
+				
+				input = [
+					["max(self::*)", doc.getElementById('FunctionNumberCaseNumber'), 123],
+					["max(*)", doc.getElementById('FunctionNumberCaseNumberMultiple'), 99],
+					["max(*)", doc.getElementById('FunctionSumCaseJavarosa'), 15],
+					["max(*)", doc.getElementById('FunctionMaxCase'), -5]
+				];
+				
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.numberValue);
+				}
+				
+				input = [
+					["max(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple')]
+				];
+				
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.isTypeOf("number", result.numberValue);
+					Y.Assert.isNaN(result.numberValue);
+				}
 			}
 			
 

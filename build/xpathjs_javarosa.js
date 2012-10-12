@@ -4353,12 +4353,82 @@ XPathJS = (function(){
 				fn: function()
 				{
 
-					return new NumberType(Math.random().toPrecision(15))
+					return new NumberType(Math.random().toFixed(15))
 				
 				},
 				
 				ret: 'number'
+			}, 
+
+			min: {
+				/**
+				 * The min function returns the smallest value in the argument node-set,
+				 * of the result of converting the string-values of the node to a number.
+				 *
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @param {NodeSetType} 
+				 * @return {NumberType}
+				 */
+				fn: function(nodeset)
+				{
+					var i, min, val;
+					
+					nodeset = nodeset.toNodeSet();
+					
+					for(i = 0; i < nodeset.length; i++)
+					{
+						val = new StringType(nodeStringValue(nodeset[i]));
+						if (val && val.toString() !== '')
+						{
+							min = (min) ? Math.min(min, val.toNumber()) : val.toNumber();
+						}
+					}
+					
+					return new NumberType(min);
+				},
+				
+				args: [
+					{t: 'node-set'}
+				],
+				
+				ret: 'number'
+			}, 
+
+			max: {
+				/**
+				 * The max function returns the largest value in the argument node-set,
+				 * of the result of converting the string-values of the node to a number.
+				 *
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @param {NodeSetType} 
+				 * @return {NumberType}
+				 */
+				fn: function(nodeset)
+				{
+					var i, max, val;
+					
+					nodeset = nodeset.toNodeSet();
+					
+					for(i = 0; i < nodeset.length; i++)
+					{
+						val = new StringType(nodeStringValue(nodeset[i]));
+						if (val && val.toString() !== '')
+						{
+							max = (max) ? Math.max(max, val.toNumber()) : val.toNumber();
+						}
+					}
+					
+					return new NumberType(max);
+				},
+				
+				args: [
+					{t: 'node-set'}
+				],
+				
+				ret: 'number'
 			}
+
+
 		}
 	}
 	
