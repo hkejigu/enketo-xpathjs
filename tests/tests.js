@@ -1646,7 +1646,6 @@ YUI.add('xpathjs-test', function (Y) {
 					["int(2)", 2],
 					["int('2.1')", 2],
 					["int('2.51')", 2]
-					//["int('a')", Number.NaN]
 				];
 				for(i=0; i<input.length; i++)
 				{
@@ -1658,7 +1657,28 @@ YUI.add('xpathjs-test', function (Y) {
 
 				result = documentEvaluate('int("a")', doc, null, win.XPathResult.NUMBER_TYPE);
 				Y.Assert.isNaN(result.numberValue);
+			},
+
+			testSubstr: function() {
+				var result, input, i;
+				
+				input = [
+					["substr('hello',0)", "hello"],
+					["substr('hello',0,5)", "hello"],
+					["substr('hello',1)", "ello"],
+					["substr('hello',1,5)", "ello"],
+					["substr('hello',1,4)", "ell"],
+					["substr('hello',-2)", "lo"],
+					["substr('hello',0,-1)", "hell"]
+				];
+				
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], doc, null, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][1], result.stringValue, "Values should be the same. " + input[i][0]);
+				}
 			}
+			
 
 			/**********************************************************************************************/
 

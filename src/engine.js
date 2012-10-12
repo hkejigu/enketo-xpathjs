@@ -4303,6 +4303,45 @@ XPathJS = (function(){
 				ret: 'number'
 			},
 
+			substr: {
+				/**
+				 * The substr function returns the substring of the first argument
+				 * starting at the position specified in the second argument
+				 * with end character position specified in the third argument.
+				 * 
+				 * THE DIFFERENCE WITH THE XPATH 1.0 NATIVE FUNCTION IS THAT POSITIONS ARE 0-BASED HERE,
+				 * THE LENGTH IS GIVEN AS A CHARACTER POSITION (END) AND NEGATIVE VALUES ARE DEALT WITH 
+				 * DIFFERENTLY
+				 *
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @param {StringType} str
+				 * @param {NumberType} start
+				 * @param {NumberType} end
+				 * @return {StringType}
+				 */
+				fn: function(str, start, end)
+				{
+					str = str.toString();
+					length = str.length;
+
+					start = Math.round(start.toNumber());
+					end = (end) ? Math.round(end.toNumber()) : length;
+					
+					return new StringType(
+						isNaN(start)
+							? ''
+							: str.substring( start < 0 ? length + start : start, end < 0 ? length + end : end )
+					);
+				},
+				
+				args: [
+					{t: 'string'},
+					{t: 'number'},
+					{t: 'number', r: false}
+				],
+				
+				ret: 'string'
+			}
 		}
 	}
 	
