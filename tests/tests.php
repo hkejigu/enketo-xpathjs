@@ -19,8 +19,13 @@
 
 $serve_xml = !empty($_GET['xml']);
 
+header('Cache-Control: no-cache, no-store, must-revalidate'); // HTTP 1.1.
+header('Pragma: no-cache'); // HTTP 1.0.
+header('Expires: 0'); // Proxies.
+
 if ($serve_xml)
 	header('Content-Type: application/xhtml+xml');
+
 ?>
 <!DOCTYPE html>
 <!-- some comment -->

@@ -3990,7 +3990,7 @@ XPathJS = (function(){
 				/**
 				 * The JavaRosa version of the sum function is the same as the XPath 1.0 function
 				 * EXCEPT that it evaluates an empty node ('') to 0 instead of NaN.
-				 *
+				 * @obsolete
 				 * @see 
 				 * @param {NodeSetType} 
 				 * @return {NumberType}
@@ -4236,7 +4236,13 @@ XPathJS = (function(){
 
 
 			regex: {
-
+				/**
+				 * The regex function evaluates a regular expression and returns true or false.
+				 * 
+				 * @see https://bitbucket.org/javarosa/javarosa/wiki/xform-jr-compat
+				 * @return {BooleanType}
+				 * 
+				 */
 				fn: function(obj, expr)
 				{
 					var value, patt;
@@ -4258,10 +4264,17 @@ XPathJS = (function(){
 			}, 
 
 			uuid: {
+				/**
+				 * The uuid function returns an RFC 1422 Version 4 UUID string.
+				 * 
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @return {StringType}
+				 * 
+				 */
 				fn: function()
 				{
 					//from broofa: http://stackoverflow.com/questions/105034/how-to-create-a-guid-uuid-in-javascript
-					var uuid = 'xxxxxxxxxxxx4xxxyxxxxxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
+					var uuid = 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, function(c) {
     					var r = Math.random()*16|0, v = c == 'x' ? r : (r&0x3|0x8);
     					return v.toString(16);
 					});
@@ -4269,7 +4282,26 @@ XPathJS = (function(){
 				}, 
 
 				ret: 'string'
-			}
+			},
+
+			'int': {
+				/**
+				 * The int function turns a parameter into a number and truncates the fractional part
+				 * 
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @return {NumberType}
+				 * 
+				 */
+				fn: function(number)
+				{
+					return new NumberType(parseInt(number));
+				}, 
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
 
 		}
 	}

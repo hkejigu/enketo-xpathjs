@@ -1635,7 +1635,29 @@ YUI.add('xpathjs-test', function (Y) {
 
 			testUuid: function(){
 				var result = documentEvaluate('uuid()', doc, null, win.XPathResult.STRING_TYPE);
-				Y.Assert.areSame(32, result.stringValue.length);
+				Y.Assert.areSame(36, result.stringValue.length);
+			},
+
+			testInt: function(){
+				var result, i;
+				input = [
+					["int(2.1)", 2],
+					["int(2.51)", 2],
+					["int(2)", 2],
+					["int('2.1')", 2],
+					["int('2.51')", 2]
+					//["int('a')", Number.NaN]
+				];
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], doc, null, win.XPathResult.NUMBER_TYPE);
+					//console.debug(input[i][1]+' -> '+typeof input[i][1]);
+					//console.debug(result.numberValue+' -> '+typeof result.numberValue );
+					Y.Assert.areSame(input[i][1], result.numberValue);
+				}
+
+				result = documentEvaluate('int("a")', doc, null, win.XPathResult.NUMBER_TYPE);
+				Y.Assert.isNaN(result.numberValue);
 			}
 
 			/**********************************************************************************************/
