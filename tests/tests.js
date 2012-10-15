@@ -688,7 +688,7 @@ YUI.add('xpathjs-test', function (Y) {
 					Y.Assert.areSame(input[i][1], result.stringValue, "Values should be the same. " + input[i][0]);
 				}
 			},
-			
+			//in javarosa this needs to return ''
 			testConcatExceptionNotEnoughArgs1: function() {
 				documentEvaluate("concat()", doc, helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
 			},
@@ -1202,6 +1202,7 @@ YUI.add('xpathjs-test', function (Y) {
 			testRoundExceptionNotEnoughArgs: function() {
 				documentEvaluate("round()", doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
 			}
+
 		});
 	
 		tests.FunctionBooleanCase = new Y.Test.Case({
@@ -1754,7 +1755,6 @@ YUI.add('xpathjs-test', function (Y) {
 				
 				for(i=0; i<input.length; i++)
 				{
-					console.debug('going to test: '+input[i][0]);
 					result = documentEvaluate(input[i][0], doc, null, win.XPathResult.NUMBER_TYPE, null);
 					Y.Assert.areSame(input[i][1], result.numberValue);
 				}
@@ -1766,8 +1766,37 @@ YUI.add('xpathjs-test', function (Y) {
 			//I don't understand how these Exception tests work...
 			testRoundExceptionTooManyArgs: function() {
 				//documentEvaluate("round(1, 2, 3)", doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+			},
+
+			testJoin: function(){
+				var result, input, i;
+
+				input = [
+					["join(', ', *)", doc.getElementById('testFunctionNodeset2'), "1, 2, 3, 4"],
+					["join(' ', 'This', 'is', 'a', 'sentence.')", doc, "This is a sentence."],
+					["join(' ## ')", doc, ""]
+				];
+
+				for(i=0; i<input.length; i++){
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.stringValue);
+				}
+			},
+
+			//noticed javarosa accepts node-set argument for concat, not if that deviates from native XPath.
+			testJrConcat: function(){
+				var result, input, i;
+
+				input = [
+					["concat(*)", doc.getElementById('testFunctionNodeset2'), '1234'],
+					["concat()", doc.getElementById('testFunctionNodeset2'), '']
+				];
+
+				for(i=0; i<input.length; i++){
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.stringValue);
+				}
 			}
-			
 
 			/**********************************************************************************************/
 

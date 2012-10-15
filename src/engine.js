@@ -4033,9 +4033,7 @@ XPathJS = (function(){
 				 */
 				fn: function(number, decimals)
 				{
-					decimals = decimals || 0;
-					decimals = Math.round(decimals);
-					console.debug('rounding: '+number+' with '+decimals+' decimaals.');
+					decimals = Math.round(decimals) || 0;
 					return new NumberType(Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals));
 				},
 				
@@ -4454,8 +4452,51 @@ XPathJS = (function(){
 				],
 				
 				ret: 'number'
-			}
+			},
 
+			join: {
+				/**
+				 * The join function returns the concatenation of arguments, separated by the
+				 * first argument string.
+				 *
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @param {StringType} str1
+				 * @param {Object} obj1
+				 * @return {StringType}
+				 */
+				fn: function(str1, obj1 /*, obj2 ... */)
+				{
+					var i, 
+						values = []
+					;
+
+					for (i=1; i < arguments.length; i++)
+					{
+						if (arguments[i] instanceof NodeSetType){
+							values = values.concat(arguments[i].stringValues());
+						}
+						else{
+							values.push(arguments[i].toString());
+						} 
+					}
+					
+					value = values[0] || ''; 
+
+					for (i = 1; i < values.length; i++ )
+					{
+						value += str1.toString() + values[i];
+					}
+
+					return new StringType(value);
+				},
+				
+				args: [
+					{t: 'string'},
+					{t: 'object', r: false, rep: true}
+				],
+				
+				ret: 'string'
+			}
 
 		}
 	}
