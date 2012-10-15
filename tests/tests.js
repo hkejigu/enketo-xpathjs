@@ -1440,6 +1440,27 @@ YUI.add('xpathjs-test', function (Y) {
 				}
 			},
 
+			testSelectedAt: function(){
+				var result, input, i;
+
+				input = [
+					["selected-at(self::node(), 0)", doc.getElementById('FunctionSelectedCaseEmpty'), ''],
+					["selected-at(self::node(), 0)", doc.getElementById('FunctionSelectedCaseSingle'), 'ab'],
+					["selected-at(self::node(), 1)", doc.getElementById('FunctionSelectedCaseSingle'), ''],
+					["selected-at(self::node(), 2)", doc.getElementById('FunctionSelectedCaseMultiple'), 'ef'],
+					["selected-at(self::node(), -1)", doc.getElementById('FunctionSelectedCaseMultiple'), ''],
+					["selected-at('apple baby crimson', 2)", doc, 'crimson'],
+					["selected-at('apple baby crimson', -1)", doc, ''],
+					["selected-at('', 1)", doc, '']
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.stringValue);
+				}
+			},
+
 			testCountSelected: function(){
 				var result, input, i;
 

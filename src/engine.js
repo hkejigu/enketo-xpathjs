@@ -4074,6 +4074,29 @@ XPathJS = (function(){
 				ret: 'boolean'
 			},
 
+			"selected-at" : {
+
+				fn: function(node, position)
+				{
+					var value, values, selectValue;
+
+					position = Math.round(position.toNumber());
+					value = node.toString();
+					values = value.split(' ');
+					selectValue = (position >= 0 && position < values.length) ? values[position] : '';
+
+					return new StringType(selectValue);
+				},
+
+				args: [
+					{t: 'object'},
+					{t: 'number'}
+				],
+
+				ret: 'string'
+
+			},
+
 			'count-selected': {
 				/**
 				 * The count-selected function returns the number of multiselect values currently selected
@@ -4498,6 +4521,15 @@ XPathJS = (function(){
 				ret: 'string'
 			},
 
+			/**
+			 * The coalesce function returns the first non-empty value for the two
+			 * arguments provided.
+			 *
+			 * @see http://opendatakit.org/help/form-design/binding/
+			 * @param {Object} a
+			 * @param {Object} b
+			 * @return {StringType}
+			 */
 			coalesce : {
 
 				fn: function(a, b)
@@ -4510,9 +4542,9 @@ XPathJS = (function(){
 					{t: 'object'}
 				],
 
-				ret: 'object'
+				ret: 'string'
 
-			},
+			}
 
 		}
 	}
