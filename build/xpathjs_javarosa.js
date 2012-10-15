@@ -3961,26 +3961,27 @@ XPathJS = (function(){
 				ret: 'number'
 			},
 			
-			round: {
-				/**
-				 * The round function returns the number that is closest
-				 * to the argument and that is an integer.
-				 *
-				 * @see http://www.w3.org/TR/xpath/#function-round
-				 * @param {NumberType} 
-				 * @return {NumberType}
-				 */
-				fn: function(number)
-				{
-					return new NumberType(Math.round(number));
-				},
-				
-				args: [
-					{t: 'number'}
-				],
-				
-				ret: 'number'
-			},
+			//Native round() function is overwritten with a custom javarosa round()
+			//round: {
+			//	/**
+			//	 * The round function returns the number that is closest
+			//	 * to the argument and that is an integer.
+			//	 *
+			//	 * @see http://www.w3.org/TR/xpath/#function-round
+			//	 * @param {NumberType} 
+			//	 * @return {NumberType}
+			//	 */
+			//	fn: function(number)
+			//	{
+			//		return new NumberType(Math.round(number));
+			//	},
+			//	
+			//	args: [
+			//		{t: 'number'}
+			//	],
+			//	
+			//	ret: 'number'
+			//},
 
 			/********************************************************************/	
 			/**** JAVAROSA-specific XPath functions (or XPath 2.0 functions) ****/
@@ -4014,6 +4015,33 @@ XPathJS = (function(){
 				
 				args: [
 					{t: 'node-set'}
+				],
+				
+				ret: 'number'
+			},
+
+			round: {
+				/**
+				 * The round function returns the number rounded to the amount of desired decimal places
+				 * or nearest integer if the decimal places argument is not provided. The latter is the
+				 * same behaviour of the native round().
+				 *
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @param {NumberType} number
+				 * @param {NumberType} decimals [description]
+				 * @return {NumberType}
+				 */
+				fn: function(number, decimals)
+				{
+					decimals = decimals || 0;
+					decimals = Math.round(decimals);
+					console.debug('rounding: '+number+' with '+decimals+' decimaals.');
+					return new NumberType(Math.round(number * Math.pow(10, decimals)) / Math.pow(10, decimals));
+				},
+				
+				args: [
+					{t: 'number'},
+					{t: 'number', r: false}
 				],
 				
 				ret: 'number'
