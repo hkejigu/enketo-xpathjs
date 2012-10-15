@@ -4496,7 +4496,23 @@ XPathJS = (function(){
 				],
 				
 				ret: 'string'
-			}
+			},
+
+			coalesce : {
+
+				fn: function(a, b)
+				{
+					return ( a.toString().length > 0 ) ? a : b ;
+				},
+
+				args: [
+					{t: 'object'},
+					{t: 'object'}
+				],
+
+				ret: 'object'
+
+			},
 
 		}
 	}

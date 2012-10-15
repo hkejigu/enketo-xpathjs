@@ -1796,6 +1796,21 @@ YUI.add('xpathjs-test', function (Y) {
 					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.STRING_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.stringValue);
 				}
+			},
+
+			testCoalesce: function(){
+				var result, input, i;
+
+				input = [
+					["coalesce('', 'ab')", doc, 'ab'],
+					["coalesce(self::*, 'ab')", doc.getElementById('FunctionSelectedCaseEmpty'), 'ab'],
+					["coalesce(self::*, 'cd')", doc.getElementById('FunctionSelectedCaseSingle'), 'ab']
+				];
+
+				for(i=0; i<input.length; i++){
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.stringValue);
+				}
 			}
 
 			/**********************************************************************************************/
