@@ -1679,6 +1679,29 @@ YUI.add('xpathjs-test', function (Y) {
 				}
 			},
 
+			//these tests are somewhat tricky as they need to be time-zone independent!
+			testFormatDate: function(){
+				var result, input, i,
+					date = new Date();
+
+				input = [
+					["format-date(.,  '%Y/%n | %y/%m | %b' )", doc.getElementById("FunctionDateCase1"), '2012/7 | 12/07 | Jul'],
+					["format-date(., '%Y/%n | %y/%m | %b')", doc.getElementById("FunctionDateCase2"), '2012/8 | 12/08 | Aug'],
+					["format-date(., '%M | %S | %3')", doc.getElementById("FunctionDateCase2"), '00 | 00 | 000'],
+					["format-date('"+date.toString()+"', '%e | %a' )", doc,
+						date.getDate()+' | '+["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()]],
+					["format-date('not a date', '%M')", doc, 'Invalid Date']
+					//["format-date('Mon, 02 Jul 2012 00:00:00 GMT', )", doc, '']
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.stringValue);
+				}
+
+			},
+
 			testUuid: function(){
 				var result = documentEvaluate('uuid()', doc, null, win.XPathResult.STRING_TYPE);
 				Y.Assert.areSame(36, result.stringValue.length);

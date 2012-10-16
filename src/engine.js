@@ -1834,7 +1834,7 @@ XPathJS = (function(){
 	}
 
 	DateType.prototype.toBoolean = function(){
-		return ( new Date(this.value) != 'Invalid Date' ) ? true : false;
+		return (!isNaN(new Date(this.value).getTime()));
 	}
 
 	/**
@@ -4644,6 +4644,73 @@ XPathJS = (function(){
 				args: [
 					{t: 'object'},
 					{t: 'object'}
+				],
+
+				ret: 'string'
+
+			},
+
+			/**
+			 * The date-format function returns the first non-empty value for the two
+			 * arguments provided. It returns date properties in the LOCAL timezone. 
+			 * TODO: check how ODK Collect deals with timezones
+			 *
+			 * @see http://opendatakit.org/help/form-design/binding/
+			 * @param {Object} a
+			 * @param {Object} b
+			 * @return {StringType}
+			 */
+			'format-date' : {
+
+				fn: function(dateO, format)
+				{
+					var i,j, 
+						dateO = new DateType(dateO), //not sure why this did not happen automatically
+						date = dateO.toDate(),
+						result = format.toString(),
+						intPad = function(num, l)
+						{
+							var str = num.toString(),
+								zeros = l - str.length;
+							for (j=0 ; j < zeros ; j++)
+							{
+								str = '0'+str;
+							}
+							return str;
+						};
+
+					if (!dateO.toBoolean())
+					{
+						return new StringType(date.toString());
+					}
+
+					props = {
+						'Y' : date.getFullYear(),
+						'y'	: date.getFullYear().toString().substring(2,4),
+						'm'	: intPad((date.getMonth()+1), 2),
+						'n' : date.getMonth()+1,
+						'b'	: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getMonth()],
+						'd'	: intPad(date.getDate(), 2),
+						'e'	: date.getDate(),
+						'H'	: intPad(date.getHours(), 2),
+						'h'	: date.getHours(),
+						'M'	: intPad(date.getMinutes(), 2),
+						'S'	: intPad(date.getSeconds(), 2),
+						'3'	: intPad(date.getMilliseconds(), 3),
+						'a' : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()]
+					}
+
+					for (prop in props)
+					{
+						result = result.replace('%'+prop, props[prop]);
+					}
+
+					return new StringType(result);
+				},
+
+				args: [
+					{t: 'date'},
+					{t: 'string'}
 				],
 
 				ret: 'string'
