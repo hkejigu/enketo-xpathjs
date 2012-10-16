@@ -3434,37 +3434,38 @@ XPathJS = (function(){
 				ret: 'string'
 			},
 			
-			concat: {
-				/**
-				 * The concat function returns the concatenation of its arguments.
-				 *
-				 * @see http://www.w3.org/TR/xpath/#function-concat
-				 * @param {StringType} str1
-				 * @param {StringType} str2
-				 * @return {StringType}
-				 */
-				fn: function(str1, str2 /*, str3 ... */)
-				{
-					var i,
-						value = ''
-					;
-					
-					for(i=0; i < arguments.length; i++)
-					{
-						value += arguments[i].toString();
-					}
-					
-					return new StringType(value);
-				},
-				
-				args: [
-					{t: 'string'},
-					{t: 'string'},
-					{t: 'string', r: false, rep: true}
-				],
-				
-				ret: 'string'
-			},
+			//native concat() was replaced with a javarosa-style concat() without breaking the native functionality
+			//concat: {
+			//	/**
+			//	 * The concat function returns the concatenation of its arguments.
+			//	 *
+			//	 * @see http://www.w3.org/TR/xpath/#function-concat
+			//	 * @param {StringType} str1
+			//	 * @param {StringType} str2
+			//	 * @return {StringType}
+			//	 */
+			//	fn: function(str1, str2 /*, str3 ... */)
+			//	{
+			//		var i,
+			//			value = ''
+			//		;
+			//		
+			//		for(i=0; i < arguments.length; i++)
+			//		{
+			//			value += arguments[i].toString();
+			//		}
+			//		
+			//		return new StringType(value);
+			//	},
+			//	
+			//	args: [
+			//		{t: 'string'},
+			//		{t: 'string'},
+			//		{t: 'string', r: false, rep: true}
+			//	],
+			//	
+			//	ret: 'string'
+			//},
 			
 			'starts-with': {
 				/**
@@ -4020,6 +4021,45 @@ XPathJS = (function(){
 				ret: 'number'
 			},
 
+			concat: {
+				/**
+				 * The concat function returns the concatenation of its arguments. This function
+				 * goes beyond the XPath Native function by also accepting only 1 argument as well
+				 * as node-set arguments that contain multiple nodes
+				 *
+				 * @see https://bitbucket.org/m.sundt/javarosa/src/62409ae3b803/core/src/org/javarosa/xpath/expr/XPathFuncExpr.java#cl-129
+				 * @param {Object} o1
+				 * @return {StringType}
+				 */
+				fn: function(o1 /*, o2 ... */)
+				{
+					var i, add,
+						value = '';
+					
+					for(i=0; i < arguments.length; i++)
+					{
+						if (arguments[i] instanceof NodeSetType)
+						{
+							add = arguments[i].stringValues().join('');
+						}
+						else
+						{
+							add = arguments[i].toString();
+						}
+
+						value += add;
+					}
+					
+					return new StringType(value);
+				},
+				
+				args: [
+					{t: 'object', r:false, rep: true}
+				],
+				
+				ret: 'string'
+			},
+
 			round: {
 				/**
 				 * The round function returns the number rounded to the amount of desired decimal places
@@ -4051,7 +4091,7 @@ XPathJS = (function(){
 				 * is included in the space-separated list of selected multiselect values
 				 * 
 				 * @see https://bitbucket.org/javarosa/javarosa/wiki/xform-jr-compat
-				 * @param {ObjectType} object
+				 * @param {Object} object
 				 * @param {StringType} value
 				 * @return {BooleanType}
 				 * 
@@ -4210,7 +4250,6 @@ XPathJS = (function(){
 					{
 						v = arguments[i];
 						w = arguments[i+1];
-						console.debug('weight: '+w);
 						if (v && w)
 						{
 							if (v instanceof NodeSetType)
@@ -4231,10 +4270,6 @@ XPathJS = (function(){
 							}
 						}
 					}
-					console.debug('values:');
-					console.debug(values);
-					console.debug('weights:');
-					console.debug(weights);
 
 					for (i=0 ; i < values.length ; i++)
 					{

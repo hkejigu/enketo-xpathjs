@@ -689,13 +689,13 @@ YUI.add('xpathjs-test', function (Y) {
 				}
 			},
 			//in javarosa this needs to return ''
-			testConcatExceptionNotEnoughArgs1: function() {
-				documentEvaluate("concat()", doc, helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
-			},
-			
-			testConcatExceptionNotEnoughArgs2: function() {
-				documentEvaluate("concat(1)", doc, helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
-			},
+			//testConcatExceptionNotEnoughArgs1: function() {
+			//	documentEvaluate("concat()", doc, helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+			//},
+			//
+			//testConcatExceptionNotEnoughArgs2: function() {
+			//	documentEvaluate("concat(1)", doc, helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+			//},
 			
 			testStartsWith: function() {
 				var result, input, i;
@@ -1828,12 +1828,15 @@ YUI.add('xpathjs-test', function (Y) {
 				}
 			},
 
-			//noticed javarosa accepts node-set argument for concat, not if that deviates from native XPath.
+			//javarosa accepts node-set argument for concat which deviates from native XPath, it also accepts no arguments.
 			testJrConcat: function(){
 				var result, input, i;
 
 				input = [
+					["concat(*, 'a')", doc.getElementById('testFunctionNodeset2'), '1234a'],
 					["concat(*)", doc.getElementById('testFunctionNodeset2'), '1234'],
+					["concat('a')", doc, 'a'],
+					["concat('a','b', '')", doc, 'ab'],
 					["concat()", doc.getElementById('testFunctionNodeset2'), '']
 				];
 
