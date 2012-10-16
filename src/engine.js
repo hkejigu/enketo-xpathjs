@@ -4155,26 +4155,19 @@ XPathJS = (function(){
 					{
 						if (arguments[i] instanceof NodeSetType)
 						{
-							//to allow for a node-set with multiple nodes as an argument
-							//(not sure if this is also the case in javarosa library)
 							for (j=0; j<arguments[i].stringValues().length ; j++)
 							{
 								if (arguments[i].stringValues()[j].toBoolean() === true)
 								{
-									//console.log('boolean string value of '+arguments[i].stringValues()[j]+' is true');
 									trues++;
 								}
-								//else console.log('boolean string value of '+arguments[i].stringValues()[j]+' is false');
 							}
 						}
 						else if (arguments[i].toBoolean() === true)
 						{
-							//console.log('boolean value of '+arguments[i]+' evaluated as true');
 							trues++;
 						}
-						//else console.log('boolean value of '+arguments[i]+' evaluated as false');
 					}
-					//console.log('trues: '+trues+' min: '+min+' max: '+max);
 
 					return new BooleanType((min < 0 || trues >= min) && (max < 0 || trues <= max));
 				},
@@ -4182,6 +4175,82 @@ XPathJS = (function(){
 				args: [
 					{t: 'number'},
 					{t: 'number'},
+					{t: 'object'},
+					{t: 'object', r: false, rep: true}
+				],
+
+				ret: 'boolean'
+			},
+
+			'weighted-checklist': {
+				/**
+				 * The weighted-checklist function returns true if the amount of 'yes' answers (take as true())
+				 * multiplied by each weight, is between min and max inclusive. 
+				 * Min or max may be -1 to indicate 'not applicable'.
+				 * 
+				 * @see http://opendatakit.org/help/form-design/binding/
+				 * @param {NumberType} min
+				 * @param {NumberType} max
+				 * @param {BaseType} oA, oB, oC etc...
+				 * @return {BooleanType}
+				 * 
+				 */
+
+				fn: function(min, max, vA, wA /*, vB , wB.... */)
+				{
+					var i, j, 
+						values = [], 
+						weights = [], 
+						weightedTrues = 0;
+
+					min = min.toNumber();
+					max = max.toNumber();
+
+					for (i=2 ; i < arguments.length ; i=i+2)
+					{
+						v = arguments[i];
+						w = arguments[i+1];
+						console.debug('weight: '+w);
+						if (v && w)
+						{
+							if (v instanceof NodeSetType)
+							{
+								values = values.concat(v.stringValues());
+							}
+							else
+							{
+								values.push(v);
+							}
+							if (w instanceof NodeSetType)
+							{
+								weigths = weights.concat(w.stringValues());
+							}
+							else
+							{
+								weights.push(w);
+							}
+						}
+					}
+					console.debug('values:');
+					console.debug(values);
+					console.debug('weights:');
+					console.debug(weights);
+
+					for (i=0 ; i < values.length ; i++)
+					{
+						if (values[i].toBoolean() === true)
+						{
+							weightedTrues += weights[i].toNumber();
+						}
+					}
+
+					return new BooleanType((min < 0 || weightedTrues >= min) && (max < 0 || weightedTrues <= max));
+				},
+
+				args: [
+					{t: 'number'},
+					{t: 'number'},
+					{t: 'object'},
 					{t: 'object'},
 					{t: 'object', r: false, rep: true}
 				],

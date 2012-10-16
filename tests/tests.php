@@ -162,6 +162,12 @@ if ($serve_xml)
 			<div id="FunctionChecklistCase0">0</div>
 		</div>
 
+		<div id="FunctionChecklistCaseValues">
+			<div>1</div>
+			<div>1</div>
+			<div>5</div>
+		</div>
+
 		<div id="FunctionDate">
 			<div id="FunctionDateCase1">2012-07-23</div>
 			<div id="FunctionDateCase2">Mon, 20 Aug 2012 00:00:00 GMT</div>
