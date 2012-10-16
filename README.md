@@ -53,7 +53,9 @@ Take a look at some [working examples](http://www.pokret.org/xpathjs/examples/) 
 
 Note that JavaRosa [deviates from the XPath spec in a few ways](https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (Enketo includes a workaround for the absolute-paths-within-repeats issue that adjusts an expression before sending it to the XPath evaluator. This way it can easily be removed in the future and the Evaluator stays 'pure'.)
 
-I strongly recommend for you to take a look at the [**CAVEATS**](https://github.com/andrejpavlovic/xpathjs/blob/master/CAVEATS.md) document to get a better understanding of XPathJS limitations.
+An exception are the ODK deviations for native XPath 1.0 function round() and concat(). These functions were replaced with custom javarosa versions as they do not break the original functionality of the native functions.
+
+Take a look at the [**CAVEATS**](https://github.com/andrejpavlovic/xpathjs/blob/master/CAVEATS.md) document to get a better understanding of XPathJS limitations.
 
 
 Background
