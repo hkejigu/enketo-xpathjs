@@ -4261,8 +4261,8 @@ XPathJS = (function(){
 								values.push(v);
 							}
 							if (w instanceof NodeSetType)
-							{
-								weigths = weights.concat(w.stringValues());
+							{	
+								weights = weights.concat(w.stringValues());
 							}
 							else
 							{

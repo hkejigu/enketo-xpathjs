@@ -186,6 +186,8 @@ if ($serve_xml)
 			<div></div>
 		</div>
 
+		<div id="FunctionWeightedChecklist">3</div>
+
 		<!-- *****************************-->
 
 		

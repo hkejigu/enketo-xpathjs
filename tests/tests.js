@@ -1511,6 +1511,7 @@ YUI.add('xpathjs-test', function (Y) {
 					["weighted-checklist(5, 5, self::* ,5)", doc.getElementById('FunctionChecklistCase0'), true],
 					["weighted-checklist(-1, 2, self::node(), 0)", doc.getElementById('FunctionChecklistCaseEmpty'), true],
 					["weighted-checklist(1, 2, self::node(), 1)", doc.getElementById('FunctionChecklistCaseEmpty'), false],
+					["weighted-checklist(3, 3, 1=1, self::node())", doc.getElementById('FunctionWeightedChecklist'), true],
 					["weighted-checklist(2, 2, true(), 2, false(), 5, false(), 6)", doc, true],
 					["weighted-checklist(2, -1, true(), 999, false(), 5, false(), 6)", doc, true]
 				]; //Note: test for two node-set arguments done elsewhere
