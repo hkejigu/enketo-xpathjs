@@ -1606,13 +1606,26 @@ YUI.add('xpathjs-test', function (Y) {
 					["number(date('1970-01-02'))", 1],
 					["number(date('1969-12-31'))", -1],
 					["number(date('2008-09-05'))", 14127],
-					["number(date('1941-12-07'))", -10252]
+					["number(date('1941-12-07'))", -10252],
+					["number('2008-09-05')", 14127]
 				];
 
 				for(i=0; i<input.length; i++)
 				{
 					result = documentEvaluate(input[i][0], doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
 					Y.Assert.areSame(input[i][1], result.numberValue);
+				}
+
+				//for nodes (where the date datatype is guessed)
+				input = [
+					[".", doc.getElementById("FunctionDateCase1"), 15544],
+					[".", doc.getElementById("FunctionDateCase2"), 15572]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.numberValue);
 				}
 			},
 
@@ -1667,12 +1680,13 @@ YUI.add('xpathjs-test', function (Y) {
 				var result, input, i;
 
 				input = [
-					["today() > (2012-01-01 + 10)", doc, true],
+					["today() > ('2012-01-01' + 10)", doc, true],
 					["10 + date('2012-07-24') = date('2012-08-03')", doc, true],
 					[". = date('2012-07-24') - 1", doc.getElementById("FunctionDateCase1"), true],
 					[". > date('2012-07-24') - 2", doc.getElementById("FunctionDateCase1"), true],
-					[". < date('2012-07-25') - 1", doc.getElementById("FunctionDateCase1"), true]//,//,
-					//["10 + 2012-07-24 = date('2012-08-03')", doc, true]
+					[". < date('2012-07-25') - 1", doc.getElementById("FunctionDateCase1"), true],
+					[". = 30 + /xhtml:html/xhtml:body/xhtml:div[@id='FunctionDate']/xhtml:div[@id='FunctionDateCase4']", doc.getElementById("FunctionDateCase1"), true],
+					["10 + '2012-07-24' = '2012-08-03'", doc, true]
 				];
 
 				for(i=0; i<input.length; i++)
@@ -1690,17 +1704,6 @@ YUI.add('xpathjs-test', function (Y) {
 					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.numberValue);
 				}
-
-				input = [
-					["10 + date('2012-07-24')", doc, "Fri, 03 Aug 2012 00:00:00 GMT (string)"]
-				];
-
-				for(i=0; i<input.length; i++)
-				{
-					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
-					Y.Assert.areSame(input[i][2], result.stringValue);
-				}
-
 			},
 			
 			testDatesNotValid: function() {

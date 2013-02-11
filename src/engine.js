@@ -1714,7 +1714,11 @@ XPathJS = (function(){
 	 */
 	StringType.prototype.toNumber = function() {
 		var result;
-							
+		
+		if (this.isDateString(this.value)){
+			return new DateType(this.value).toNumber();
+		}
+			
 		// Digits ('.' Digits?)?
 		result = this.value.match(/^[ \t\r\n]*(-?[0-9]+(?:[.][0-9]*)?)[ \t\r\n]*$/)
 		if (result !== null)
