@@ -4719,8 +4719,32 @@ XPathJS = (function(){
 
 				ret: 'string'
 
-			}
+			},
 
+			/**
+			 * The pow function returns exponentiated result
+			 * arguments provided.
+			 *
+			 * @see temporary: https://bitbucket.org/m.sundt/javarosa/pull-request/2/adding-pow-support/diff
+			 * @param {NumberType} a
+			 * @param {NumberType} b
+			 * @return {NumberType}
+			 */
+			pow : {
+
+				fn: function(a, b)
+				{
+					return new NumberType( Math.pow(a, b) ) ;
+				},
+
+				args: [
+					{t: 'number'},
+					{t: 'number'}
+				],
+
+				ret: 'number'
+
+			}
 		}
 	}
 	
