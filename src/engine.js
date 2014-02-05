@@ -5127,14 +5127,12 @@ XPathJS = (function(){
 		/**
 		 * Bind DOM Level 3 XPath interfaces to the DOM.
 		 *
-		 * @param {Object} bindings List of new DOM Level 3 XPath objects and functions
-		 *         that will replace the existing ones. If empty,
-		 *         createDomLevel3XPathBindings() will be used.
+		 * @param {Object} doc the document or (Document.prototype!) to bind the evaluator etc. to
 		 * @return List of original DOM Level 3 XPath objects that has been replaced
 		 */
-		bindDomLevel3XPath: function(bindings)
+		bindDomLevel3XPath: function(doc)
 		{
-			var newBindings = (bindings || module.createDomLevel3XPathBindings()),
+			var newBindings = module.createDomLevel3XPathBindings(),
 				currentBindings = module.getCurrentDomLevel3XPathBindings(),
 				i
 			;
@@ -5146,7 +5144,7 @@ XPathJS = (function(){
 			
 			for(i in newBindings['document'])
 			{
-				document[i] = newBindings['document'][i];
+				doc[i] = newBindings['document'][i];
 			}
 			
 			return currentBindings;
