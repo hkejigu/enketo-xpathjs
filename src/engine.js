@@ -5130,10 +5130,11 @@ XPathJS = (function(){
 		 * @param {Object} doc the document or (Document.prototype!) to bind the evaluator etc. to
 		 * @return List of original DOM Level 3 XPath objects that has been replaced
 		 */
-		bindDomLevel3XPath: function(doc)
+		bindDomLevel3XPath: function(doc, bindings)
 		{
-			var newBindings = module.createDomLevel3XPathBindings(),
+			var newBindings = (bindings || module.createDomLevel3XPathBindings()),
 				currentBindings = module.getCurrentDomLevel3XPathBindings(),
+				doc = doc || document,
 				i
 			;
 			

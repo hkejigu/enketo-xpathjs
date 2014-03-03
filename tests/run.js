@@ -70,6 +70,7 @@ YUI().use("node", "test-console", function (Y) {
 				if (!useNative) {
 					// initialize xpathjs
 					win.XPathJS.bindDomLevel3XPath(
+						null,
 						win.XPathJS.createDomLevel3XPathBindings({
 							'case-sensitive': (useXml) ? true : false
 						})
