@@ -1647,13 +1647,20 @@ YUI.add('xpathjs-test', function (Y) {
 					["date('2012-01-01') < today()", true],
 					["date('2100-01-02') > today()", true],
 					["date('2012-01-01') < now()", true],
-					["date('2100-01-02') > now()", true],
+					["date('2100-01-02 00:00:00') > now()", true],
 					["now() > today()", true]
 				];
 
 				for(i=0; i<input.length; i++)
 				{
-					result = documentEvaluate(input[i][0], doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					var expr = input[i][0];
+
+					result = documentEvaluate(expr, doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][1], result.booleanValue);
+
+					// do the same tests for the alias date-time()
+					expr = expr.replace('date(', 'date-time(');
+					result = documentEvaluate(expr, doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
 					Y.Assert.areSame(input[i][1], result.booleanValue);
 				}
 			},
@@ -1671,7 +1678,14 @@ YUI.add('xpathjs-test', function (Y) {
 
 				for(i=0; i<input.length; i++)
 				{
-					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					var expr = input[i][0];
+
+					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.booleanValue);
+
+					// do the same tests for the alias date-time()
+					expr = expr.replace('date(', 'date-time(');
+					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.booleanValue);
 				}
 			},
@@ -1691,7 +1705,14 @@ YUI.add('xpathjs-test', function (Y) {
 
 				for(i=0; i<input.length; i++)
 				{
-					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					var expr = input[i][0];
+
+					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.booleanValue);
+
+					// do the same tests for the alias date-time()
+					expr = expr.replace('date(', 'date-time(');
+					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.booleanValue);
 				}
 
@@ -1701,7 +1722,14 @@ YUI.add('xpathjs-test', function (Y) {
 
 				for(i=0; i<input.length; i++)
 				{
-					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+					var expr = input[i][0];
+
+					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.numberValue);
+
+					// do the same tests for the alias date-time()
+					expr = expr.replace('date(', 'date-time(');
+					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.numberValue);
 				}
 			},
@@ -1718,7 +1746,14 @@ YUI.add('xpathjs-test', function (Y) {
 
 				for(i=0; i<input.length; i++)
 				{
-					result = documentEvaluate(input[i], doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					var expr = input[i][0];
+
+					result = documentEvaluate(expr, doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
+					Y.Assert.areSame(false, result.booleanValue);
+
+					// do the same tests for the alias date-time()
+					expr = expr.replace('date(', 'date-time(');
+					result = documentEvaluate(expr, doc, helpers.xhtmlResolver, win.XPathResult.BOOLEAN_TYPE, null);
 					Y.Assert.areSame(false, result.booleanValue);
 				}
 			},
@@ -1747,7 +1782,7 @@ YUI.add('xpathjs-test', function (Y) {
 					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.stringValue);
 
-					// do the same tests for the alias format-date-string
+					// do the same tests for the alias format-date-string()
 					expr = expr.replace('format-date', 'format-date-time');
 					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.stringValue);

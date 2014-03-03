@@ -4363,6 +4363,25 @@ XPathJS = (function(){
 				ret: 'string'
 			},
 
+			/**
+			 * Alias of "date"
+			 * Note: Javarosa makes a distinction between date and date-time() in that
+			 * time is removed from date(). We have to do that too, but all date() tests pass.
+			 */
+			'date-time': {
+
+				fn: function(obj)
+				{
+					return new DateType(obj.toDate());
+				},
+
+				args: [
+					{t: 'object'}
+				],
+
+				ret: 'string'
+			},
+
 			today: {
 				
 				fn: function()
