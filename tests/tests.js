@@ -2003,6 +2003,10 @@ YUI.add('xpathjs-test', function (Y) {
 
 				result = documentEvaluate( "version()", doc, null, win.XPathResult.STRING_TYPE, null );
 				Y.Assert.areSame( "", result.stringValue );
+
+				//change the context
+				result = documentEvaluate( "version()",  doc.getElementById('FunctionSelectedCaseEmpty'), null, win.XPathResult.STRING_TYPE, null );
+				Y.Assert.areSame( "", result.stringValue );
 			}
 
 			/**********************************************************************************************/

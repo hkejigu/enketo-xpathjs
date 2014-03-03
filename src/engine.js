@@ -4839,9 +4839,11 @@ XPathJS = (function(){
 
 				fn: function()
 				{
-					var verAttr = this.node.documentElement.attributes['version'];
-					if( verAttr ) {
-						return new StringType(verAttr.textContent);
+					var root = (this.node.nodeName === '#document') ? this.node.documentElement : this.node.ownerDocument.firstElementChild,
+					 	versionAttr = root.attributes['version'];
+
+					if( versionAttr ) {
+						return new StringType(versionAttr.textContent);
 					}
 					return new StringType('');
 				},
