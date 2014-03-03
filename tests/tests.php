@@ -25,7 +25,7 @@ if ($serve_xml)
 ?>
 <!DOCTYPE html>
 <!-- some comment -->
-<html xml:lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://some-namespace.com/nss">
+<html xml:lang="en-us" xmlns="http://www.w3.org/1999/xhtml" xmlns:ev="http://some-namespace.com/nss" version="1a">
 	<head>
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>xpath-test</title>

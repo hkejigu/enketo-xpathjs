@@ -1991,6 +1991,18 @@ YUI.add('xpathjs-test', function (Y) {
 					result = documentEvaluate( input[ i ][ 0 ], input[ i ][ 1 ], null, win.XPathResult.NUMBER_TYPE, null );
 					Y.Assert.areSame( input[ i ][ 2 ], result.numberValue );
 				}
+			},
+
+			testVersion: function( ) {
+				var result;
+
+				result = documentEvaluate( "version()", doc, null, win.XPathResult.STRING_TYPE, null );
+				Y.Assert.areSame( "1a", result.stringValue );
+
+				document.documentElement.removeAttribute('version');
+
+				result = documentEvaluate( "version()", doc, null, win.XPathResult.STRING_TYPE, null );
+				Y.Assert.areSame( "", result.stringValue );
 			}
 
 			/**********************************************************************************************/

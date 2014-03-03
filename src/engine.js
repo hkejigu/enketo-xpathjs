@@ -4410,7 +4410,6 @@ XPathJS = (function(){
 				ret: 'string'
 			},
 
-
 			regex: {
 				/**
 				 * The regex function evaluates a regular expression and returns true or false.
@@ -4827,6 +4826,29 @@ XPathJS = (function(){
 				],
 
 				ret: 'number'
+
+			},
+
+
+			/**
+			 * The version function returns the value of the version attribute of the root element
+			 *
+			 * @return {StringType}
+			 */
+			version : {
+
+				fn: function()
+				{
+					var verAttr = this.node.documentElement.attributes['version'];
+					if( verAttr ) {
+						return new StringType(verAttr.textContent);
+					}
+					return new StringType('');
+				},
+
+				args: [],
+
+				ret: 'string'
 
 			}
 		}
