@@ -1,0 +1,20 @@
+{
+  "name": "XPathJS_javarosa",
+  "description": "JS implementation of XPath extended with OpenRosa functions and the date datatype",
+  "homepage": "https://enketo.org",
+  "version": "1.0.0",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/MartijnR/XPathJS_javarosa"
+  },
+  "contributors": [
+    "Andrej Pavlovic",
+    "Martijn van de Rijdt"
+  ],
+  "scripts": {
+  },
+  "devDependencies": {
+    "grunt": "~0.4.1",
+    "grunt-php": "^0.3.2"
+  }
+}
