@@ -1736,39 +1736,24 @@ YUI.add('xpathjs-test', function (Y) {
 						date.getDate()+' | '+["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()]],
 					["format-date('not a date', '%M')", doc, 'Invalid Date'],
 					//["format-date('Mon, 02 Jul 2012 00:00:00 GMT', )", doc, '']
-					["format-date-time(., '%Y | %y | %m | %n | %b | %d | %e | %H | %h | %M | %S | %3 | %a')",doc.getElementById("FunctionDateCase5"), 
+					["format-date(., '%Y | %y | %m | %n | %b | %d | %e | %H | %h | %M | %S | %3 | %a')",doc.getElementById("FunctionDateCase5"), 
 						'2012 | 12 | 08 | 8 | Aug | 08 | 8 | 06 | 6 | 07 | 08 | 123 | Wed']
 				];
 
 				for(i=0; i<input.length; i++)
 				{
-					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+					var expr = input[i][0];
+
+					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.stringValue);
+
+					// do the same tests for the alias format-date-string
+					expr = expr.replace('format-date', 'format-date-time');
+					result = documentEvaluate(expr, input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.stringValue);
 				}
 			},
 
-			//these tests are somewhat tricky as they need to be time-zone independent!
-			testFormatDateTime: function(){
-				var result, input, i,
-					date = new Date();
-
-				input = [
-					["format-date-time(.,  '%Y/%n | %y/%m | %b' )", doc.getElementById("FunctionDateCase1"), '2012/7 | 12/07 | Jul'],
-					["format-date-time(., '%Y/%n | %y/%m | %b')", doc.getElementById("FunctionDateCase2"), '2012/8 | 12/08 | Aug'],
-					["format-date-time(., '%M | %S | %3')", doc.getElementById("FunctionDateCase2"), '00 | 00 | 000'],
-					["format-date-time('"+date.toString()+"', '%e | %a' )", doc,
-						date.getDate()+' | '+["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()]],
-					["format-date-time('not a date', '%M')", doc, 'Invalid Date'],
-					["format-date-time(., '%Y | %y | %m | %n | %b | %d | %e | %H | %h | %M | %S | %3 | %a')",doc.getElementById("FunctionDateCase5"), 
-						'2012 | 12 | 08 | 8 | Aug | 08 | 8 | 06 | 6 | 07 | 08 | 123 | Wed']
-				];
-
-				for(i=0; i<input.length; i++)
-				{
-					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
-					Y.Assert.areSame(input[i][2], result.stringValue);
-				}
-			},
 
 			testUuid: function(){
 				var result = documentEvaluate('uuid()', doc, null, win.XPathResult.STRING_TYPE);
