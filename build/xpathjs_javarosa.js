@@ -4905,13 +4905,14 @@ XPathJS = (function(){
 
 			/**
 			 * The indexed-repeat function... should be used as little as possible
+			 * THIS FUNCTION DOESN'T WORK NICELY WITH POSITION-INJECTION INSIDE REPEATS
 			 *
 			 * @param { NodeSetType} nodeset 	 	Collection of nodes of which to select one
 			 * @param { NodeSetType} r1,r2,r3,r4,r5 The repeat nodes 
 			 * @param { NumberType}  p1,p2,p3,p4,p5 The position of the repeat that contains the node to return
 			 * @return {NodeSetType}
 			 */
-			'indexed-repeat': {
+			/*'indexed-repeat': {
 
 				fn: function(nodeset, r1, p1, r2, p2, r3, p3, r4, p4, r5, p5) {
 					var tagName, node, repeat, position, repeats, positions, i;
@@ -4959,7 +4960,7 @@ XPathJS = (function(){
 
 				ret: 'node-set'
 
-			}
+			}*/
 		}
 	}
 	

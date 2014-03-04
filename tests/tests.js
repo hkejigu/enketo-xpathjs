@@ -2025,7 +2025,7 @@ YUI.add('xpathjs-test', function (Y) {
 				Y.Assert.areSame( "", result.stringValue );
 			},
 
-			testIndexedRepeat: function() {
+			/*testIndexedRepeat: function() {
 				var result, input, i;
 
 				input = [
@@ -2041,7 +2041,7 @@ YUI.add('xpathjs-test', function (Y) {
 					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
 					Y.Assert.areSame(input[i][2], result.stringValue);
 				}
-			},
+			},*/
 
 			/*testIndexedRepeatInvalidArgs: function() {
 				var result, input, i;
