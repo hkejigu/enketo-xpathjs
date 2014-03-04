@@ -4036,7 +4036,7 @@ XPathJS = (function(){
 				 *
 				 * Note that these are actually two different functions into one...
 				 *
-				 * @param {NodeSetType} node
+				 * @param {NodeSetType?} node
 				 * @return {NumberType}
 				 */
 				fn: function(nodeset)
@@ -4060,9 +4060,7 @@ XPathJS = (function(){
 
 							return new NumberType(position);
 						} else {
-
-							console.error('nodeset provided to position() contained multiple nodes')
-							return new NumberType(-1);
+							throw new Error('nodeset provided to position() contained multiple nodes');
 						}
 					}
 					// this is the native XPath behaviour
@@ -4902,6 +4900,64 @@ XPathJS = (function(){
 				args: [],
 
 				ret: 'string'
+
+			},
+
+			/**
+			 * The indexed-repeat function... should be used as little as possible
+			 *
+			 * @param { NodeSetType} nodeset 	 	Collection of nodes of which to select one
+			 * @param { NodeSetType} r1,r2,r3,r4,r5 The repeat nodes 
+			 * @param { NumberType}  p1,p2,p3,p4,p5 The position of the repeat that contains the node to return
+			 * @return {NodeSetType}
+			 */
+			'indexed-repeat': {
+
+				fn: function(nodeset, r1, p1, r2, p2, r3, p3, r4, p4, r5, p5) {
+					var tagName, node, repeat, position, repeats, positions, i;
+
+					nodeset = nodeset.toNodeSet();
+
+					if (nodeset.length === 0) {
+						throw new Error('indexed-repeat called with empty nodeset in first parameter');
+						return;
+					} 
+					if (arguments.length % 2 !== 1) {
+						throw new Error('indexed-repeat received invalid number of arguments');
+						return;
+					}
+
+					for ( i = 1; i < arguments.length - 1; i += 2) {
+						position = arguments[ i + 1 ].toNumber();
+						repeats = arguments[ i ].toNodeSet();
+						if (repeats.length === 0) {
+							throw new Error('indexed-repeat called with empty nodeset as repeat parameter');
+						}
+						tagName = repeats[0].tagName;
+						repeat = (repeat) ? repeat.getElementsByTagName(tagName)[position - 1] : repeats[position - 1];
+					}
+
+					tagName = nodeset[0].tagName;
+					node = repeat.getElementsByTagName(tagName);
+
+					return new NodeSetType(node, 'document-order');
+				},
+
+				args: [
+					{ t: 'node-set' }, 
+					{ t: 'node-set' }, 
+					{ t: 'number' },
+					{ t: 'node-set', r: false}, 
+					{ t: 'number', r: false },
+					{ t: 'node-set', r:false }, 
+					{ t: 'number', r: false},
+					{ t: 'node-set', r: false }, 
+					{ t: 'number', r:false },
+					{ t: 'node-set', r:false }, 
+					{ t: 'number', r:false }
+				],
+
+				ret: 'node-set'
 
 			}
 		}

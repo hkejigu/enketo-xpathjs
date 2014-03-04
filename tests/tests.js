@@ -2023,7 +2023,39 @@ YUI.add('xpathjs-test', function (Y) {
 				//change the context
 				result = documentEvaluate( "version()",  doc.getElementById('FunctionSelectedCaseEmpty'), null, win.XPathResult.STRING_TYPE, null );
 				Y.Assert.areSame( "", result.stringValue );
-			}
+			},
+
+			testIndexedRepeat: function() {
+				var result, input, i;
+
+				input = [
+					// targeting div child of #testXPathEvaluate
+					["indexed-repeat(xhtml:div/xhtml:div, xhtml:div, 2)", doc.getElementById('body'), 'some text'],
+					// targeting 3rd p-element in #testFunctionNodeset3
+					["indexed-repeat(xhtml:div/xhtml:p, xhtml:div, 3)", doc.getElementById('testFunctionNodeset3'), '3'],
+					// targeting 3rd p-element in #testFunctionNodeset3, in a more complex manner (triple-nested repeats)
+					["indexed-repeat(xhtml:div/xhtml:div/xhtml:div/xhtml:p, xhtml:div, 4, xhtml:div/xhtml:div, 2, xhtml:div/xhtml:div/xhtml:div, 3)", doc.getElementById('body'), '3']
+				]
+
+				for (i = 0; i < input.length; i++) {
+					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.stringValue);
+				}
+			},
+
+			/*testIndexedRepeatInvalidArgs: function() {
+				var result, input, i;
+
+				input = [
+					// targeting div child of #testXPathEvaluate
+					["indexed-repeat(xhtml:div/xhtml:div, xhtml:div, 2, xhtml:div)", doc.getElementById('body'), 'some text'],
+				]
+
+				for (i = 0; i < input.length; i++) {
+					result = documentEvaluate(input[i][0], input[i][1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+					Y.Assert.areSame(51, win.XPathException.INVALID_EXPRESSION_ERR);
+				}
+			}*/
 
 			/**********************************************************************************************/
 

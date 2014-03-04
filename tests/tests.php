@@ -30,7 +30,7 @@ if ($serve_xml)
 		<meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 		<title>xpath-test</title>
 	</head>
-	<body class="yui3-skin-sam">
+	<body class="yui3-skin-sam" id="body">
 		<div id="testXPathNSResolver">
 			<div id="testXPathNSResolverNode" xmlns:xforms="http://www.w3.org/2002/xforms">
 				<div xmlns="http://www.w3.org/TR/REC-html40">
