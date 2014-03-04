@@ -3103,20 +3103,20 @@ XPathJS = (function(){
 				ret: 'number'
 			},
 			
-			position: {
-				/**
-				 * The position function returns a number equal to the context position from the expression evaluation context.
-				 *
-				 * @see http://www.w3.org/TR/xpath/#function-position
-				 * @return {NumberType}
-				 */
-				fn: function()
-				{
-					return new NumberType(this.pos);
-				},
-				
-				ret: 'number'
-			},
+//			position: {
+//				/**
+//				 * The position function returns a number equal to the context position from the expression evaluation context.
+//				 *
+//				 * @see http://www.w3.org/TR/xpath/#function-position
+//				 * @return {NumberType}
+//				 */
+//				fn: function()
+//				{
+//					return new NumberType(this.pos);
+//				},
+//				
+//				ret: 'number'
+//			},
 			
 			count: {
 				/**
@@ -4020,6 +4020,57 @@ XPathJS = (function(){
 				
 				args: [
 					{t: 'node-set'}
+				],
+				
+				ret: 'number'
+			},
+
+
+			position: {
+				/**
+				 * Hacked OpenRosa function to return the position of a nodeset argument
+				 * the native position function accepts no arguments and always returns one.
+				 * 
+				 * This should not break proper XPath functioning with /path/to/node[position() < 3],
+				 * but this is not supported in JavaRosa anyway.
+				 *
+				 * Note that these are actually two different functions into one...
+				 *
+				 * @param {NodeSetType} node
+				 * @return {NumberType}
+				 */
+				fn: function(nodeset)
+				{
+
+					// this is the JavaRosa behaviour
+					if (nodeset) {
+						var node, nodeName, position;
+					
+						nodeset = nodeset.toNodeSet();
+
+						if (nodeset.length === 1) {
+							node = nodeset[0];
+							position = 1;
+							nodeName = node.tagName;
+							
+							while (node.previousElementSibling && node.previousElementSibling.tagName === nodeName) {
+								node = node.previousElementSibling;
+								position++;
+							}
+
+							return new NumberType(position);
+						} else {
+
+							console.error('nodeset provided to position() contained multiple nodes')
+							return new NumberType(-1);
+						}
+					}
+					// this is the native XPath behaviour
+					return new NumberType(this.pos);
+				},
+
+				args: [
+					{t: 'node-set', r: false}
 				],
 				
 				ret: 'number'

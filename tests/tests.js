@@ -1406,9 +1406,25 @@ YUI.add('xpathjs-test', function (Y) {
 //				{
 //					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
 //					Y.Assert.isTypeOf("number", result.numberValue);
-//					Y.Assert.isNaN(result.numberValue);
 //				}
 //			},
+
+			//test only the use of position(node) with an argument
+			testJrPosition: function() {
+				var result, input, i;
+
+				input = [
+					['position(..)', doc.getElementById('FunctionNumberCaseNumberMultiple'), 6],
+					['position(.)', doc.getElementById('FunctionNumberCaseNumberMultiple'), 3],
+					['position(../..)', doc.getElementById('testFunctionNodeset3NodeP'), 2]
+				];
+
+				for(i=0; i<input.length; i++)
+				{
+					result = documentEvaluate(input[i][0], input[i][1], null, win.XPathResult.NUMBER_TYPE, null);
+					Y.Assert.areSame(input[i][2], result.numberValue);
+				}
+			},
 
 			testSelected: function(){
 				var result, input, i;
