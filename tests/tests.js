@@ -1866,7 +1866,8 @@ YUI.add('xpathjs-test', function (Y) {
 					["min(self::*)", doc.getElementById('FunctionNumberCaseNumber'), 123],
 					["min(*)", doc.getElementById('FunctionNumberCaseNumberMultiple'), -10],
 					["min(*)", doc.getElementById('FunctionSumCaseJavarosa'), -10],
-					["min(*)", doc.getElementById('FunctionMinCase'), 5]
+					["min(*)", doc.getElementById('FunctionMinCase'), 5],
+					["min(1, 2, 3)", doc, 1]
 				];
 				
 				for(i=0; i<input.length; i++)
@@ -1894,7 +1895,8 @@ YUI.add('xpathjs-test', function (Y) {
 					["max(self::*)", doc.getElementById('FunctionNumberCaseNumber'), 123],
 					["max(*)", doc.getElementById('FunctionNumberCaseNumberMultiple'), 99],
 					["max(*)", doc.getElementById('FunctionSumCaseJavarosa'), 15],
-					["max(*)", doc.getElementById('FunctionMaxCase'), -5]
+					["max(*)", doc.getElementById('FunctionMaxCase'), -5],
+					["max(1, 2, 3)", doc, 3]
 				];
 				
 				for(i=0; i<input.length; i++)
