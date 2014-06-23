@@ -1748,19 +1748,20 @@ XPathJS = (function(){
 	 * @return {Boolean} 
 	 */
 	StringType.prototype.isDateString = function(){	
+		// if it is a number
 		if (!isNaN(this.value)){
 			return false;
 		}
+		// if JavaScript cannot parse the value to a date
 		if (isNaN(Date.parse(this.value))){
 			return false;
 		}
-//		if ( /\'[0-9.-]*\'/.test(this.value) === true){
-//			console.debug('returning false');
-//			return false;
-//		} 
-//		if ( /\"[0-9.-]*\"/.test(this.value) === true){
-//			return false;
-//		}
+		// if it does not conform to this crude regex 
+		// (required on old versions of Android webview that parse weird strings such as "opv_3" to a valid date...)
+		// it is just a bug fix we can remove around 2018 probably
+		if (!/('|")?[0-9]{4}(-|\/)[0-9]{2}(-|\/)[0-9]{2}('|")?/.test(this.value)){
+			return false;
+		}
 		console.debug('found string value that passes check for datestringiness: '+this.value);
 		return true;
 	}

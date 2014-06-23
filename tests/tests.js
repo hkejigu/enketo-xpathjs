@@ -1686,8 +1686,6 @@ YUI.add('xpathjs-test', function (Y) {
 
 				input = [
 					[". < date('2012-07-24')", doc.getElementById("FunctionDateCase1"), true],
-					[". < 'Mon, 20 Aug 2012 00:00:00 GMT'", doc.getElementById("FunctionDateCase1"), true],//fails in FF
-					[". > 'Mon, 02 Jul 2012 00:00:00 GMT'", doc.getElementById("FunctionDateCase1"), true],//fails in FF
 					//returns false if strings are compared but true if dates are compared
 					["../node()[@id='FunctionDateCase2'] > ../node()[@id='FunctionDateCase3']", doc.getElementById("FunctionDateCase1"), true]
 				];
@@ -1755,7 +1753,8 @@ YUI.add('xpathjs-test', function (Y) {
 
 				input = [
 					//"date('1983-09-31')",
-					"date('not a date')"
+					"date('not a date')",
+					"date('opv_3')"
 					//"date(true())"
 					//"date(convertible())"
 				];
