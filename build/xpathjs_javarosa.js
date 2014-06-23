@@ -1748,19 +1748,20 @@ XPathJS = (function(){
 	 * @return {Boolean} 
 	 */
 	StringType.prototype.isDateString = function(){	
+		// if it is a number
 		if (!isNaN(this.value)){
 			return false;
 		}
+		// if JavaScript cannot parse the value to a date
 		if (isNaN(Date.parse(this.value))){
 			return false;
 		}
-//		if ( /\'[0-9.-]*\'/.test(this.value) === true){
-//			console.debug('returning false');
-//			return false;
-//		} 
-//		if ( /\"[0-9.-]*\"/.test(this.value) === true){
-//			return false;
-//		}
+		// if it does not conform to this crude regex 
+		// (required on old versions of Android webview that parse weird strings such as "opv_3" to a valid date...)
+		// it is just a bug fix we can remove around 2018 probably
+		if (!/('|")?[0-9]{4}(-|\/)[0-9]{2}(-|\/)[0-9]{2}('|")?/.test(this.value)){
+			return false;
+		}
 		console.debug('found string value that passes check for datestringiness: '+this.value);
 		return true;
 	}
@@ -4284,7 +4285,7 @@ XPathJS = (function(){
 				 * @see http://opendatakit.org/help/form-design/binding/
 				 * @param {NumberType} min
 				 * @param {NumberType} max
-				 * @param {BaseType} oA, oB, oC etc...
+				 * @param {BaseType} vA, vB, vC etc...
 				 * @return {BooleanType}
 				 * 
 				 */
@@ -4586,25 +4587,44 @@ XPathJS = (function(){
 
 			min: {
 				/**
-				 * The min function returns the smallest value in the argument node-set,
-				 * of the result of converting the string-values of the node to a number.
+				 * The min function returns the smallest values in the argument node-sets,
+				 * of the result of converting the string-values of the nodes to a number.
+				 *
+				 * A slight improvement over JavaRosa is that each argument can be a nodeset
 				 *
 				 * @see http://opendatakit.org/help/form-design/binding/
-				 * @param {NodeSetType} 
+				 * @param {BaseType} object1
+				 * @param {BaseType} object2
 				 * @return {NumberType}
 				 */
-				fn: function(nodeset)
+				fn: function(object1, object2 /*, object3 ... */)
 				{
-					var i, min, val;
-					
-					nodeset = nodeset.toNodeSet();
-					
-					for(i = 0; i < nodeset.length; i++)
+					var i, min, val, nodeset;
+
+					console.log('min args', arguments);
+					for (i = 0; i < arguments.length; i++)
 					{
-						val = new StringType(nodeStringValue(nodeset[i]));
-						if (val && val.toString() !== '')
+
+						if (arguments[i] instanceof NodeSetType ){
+
+							nodeset = arguments[i].toNodeSet();
+						
+							for(i = 0; i < nodeset.length; i++)
+							{
+								val = new StringType(nodeStringValue(nodeset[i]));
+								if (val && val.toString() !== '')
+								{
+									min = (min) ? Math.min(min, val.toNumber()) : val.toNumber();
+								}
+							}
+						} 
+						else 
 						{
-							min = (min) ? Math.min(min, val.toNumber()) : val.toNumber();
+							val = new StringType(arguments[i].toString());
+							if (val && val.toString() !== '')
+							{
+								min = (min) ? Math.min(min, val.toNumber()) : val.toNumber();
+							}
 						}
 					}
 					
@@ -4612,7 +4632,8 @@ XPathJS = (function(){
 				},
 				
 				args: [
-					{t: 'node-set'}
+					{t: 'object'}, 
+					{t: 'object', r: false, rep: true}
 				],
 				
 				ret: 'number'
@@ -4620,33 +4641,51 @@ XPathJS = (function(){
 
 			max: {
 				/**
-				 * The max function returns the largest value in the argument node-set,
-				 * of the result of converting the string-values of the node to a number.
+				 * The max function returns the largest value in the argument node-sets,
+				 * of the result of converting the string-values of the nodes to a number.
+				 *
+				 * A slight improvement over JavaRosa is that each argument can be a nodeset
 				 *
 				 * @see http://opendatakit.org/help/form-design/binding/
-				 * @param {NodeSetType} 
+				 * @param {BaseType}  object1
+				 * @param {BaseType}  object2
 				 * @return {NumberType}
 				 */
-				fn: function(nodeset)
+				fn: function(object1, object2 /* object3 ... */)
 				{
-					var i, max, val;
+					var i, max, val, nodeset;
 					
-					nodeset = nodeset.toNodeSet();
-					
-					for(i = 0; i < nodeset.length; i++)
+					for (i = 0; i < arguments.length; i++)
 					{
-						val = new StringType(nodeStringValue(nodeset[i]));
-						if (val && val.toString() !== '')
-						{
-							max = (max) ? Math.max(max, val.toNumber()) : val.toNumber();
+						if (arguments[i] instanceof NodeSetType ){
+							
+							nodeset = arguments[i].toNodeSet();
+						
+							for(i = 0; i < nodeset.length; i++)
+							{
+								val = new StringType(nodeStringValue(nodeset[i]));
+								if (val && val.toString() !== '')
+								{
+									max = (max) ? Math.max(max, val.toNumber()) : val.toNumber();
+								}
+							}
 						}
+						else {
+							val = new StringType(arguments[i].toString());
+							if (val && val.toString() !== '')
+							{
+								max = (max) ? Math.max(max, val.toNumber()) : val.toNumber();
+							}
+						}
+						
 					}
 					
 					return new NumberType(max);
 				},
 				
 				args: [
-					{t: 'node-set'}
+					{t: 'object'}, 
+					{t: 'object', r: false, rep: true}
 				],
 				
 				ret: 'number'
