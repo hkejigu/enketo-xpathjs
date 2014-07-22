@@ -4432,6 +4432,23 @@ XPathJS = (function(){
 				ret: 'string'
 			},
 
+			/* Alias of "date-time"
+			 * Not 100% sure this is correct, but I think the behaviour will match ODK's behaviour.
+			 */
+			'decimal-date-time': {
+
+				fn: function(obj)
+				{
+					return new DateType(obj.toDate());
+				},
+
+				args: [
+					{t: 'object'}
+				],
+
+				ret: 'string'
+			},
+
 			today: {
 				
 				fn: function()
