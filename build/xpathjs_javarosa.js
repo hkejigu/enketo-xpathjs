@@ -4432,6 +4432,23 @@ XPathJS = (function(){
 				ret: 'string'
 			},
 
+			/* Alias of "date-time"
+			 * Not 100% sure this is correct, but I think the behaviour will match ODK's behaviour.
+			 */
+			'decimal-date-time': {
+
+				fn: function(obj)
+				{
+					return new DateType(obj.toDate());
+				},
+
+				args: [
+					{t: 'object'}
+				],
+
+				ret: 'string'
+			},
+
 			today: {
 				
 				fn: function()
@@ -4941,6 +4958,35 @@ XPathJS = (function(){
 				ret: 'string'
 
 			},
+
+			/**
+			 * The once function returns the value of the parameter if its own value
+			 * is not empty, NaN, [Infinity or -Infinity]. The naming is therefore misleading! 
+			 * Also note that the parameter expr is always evaluated.
+			 * This function simply decides whether to return the new result or the old value.
+			 *
+			 * @return {StringType}
+			 */
+			once : {
+
+				fn: function(a)
+				{
+					var curValue = nodeStringValue(this.node),
+						newValue = a.toString();
+
+					// disable NaN, Infinity and -Infinity...
+					newValue = (newValue === 'NaN' /*|| newValue === 'Infinity' || newValue === '-Infinity'*/) ? "" : newValue;
+
+					return (curValue !== "") ? new StringType(curValue) : new StringType(newValue); 
+				},
+
+				args: [
+					{t: 'string'}
+				],
+
+				ret: 'string'
+
+			}
 
 			/**
 			 * The indexed-repeat function... should be used as little as possible
