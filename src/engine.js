@@ -4943,6 +4943,35 @@ XPathJS = (function(){
 			},
 
 			/**
+			 * The once function returns the value of the parameter if its own value
+			 * is not empty, NaN, [Infinity or -Infinity]. The naming is therefore misleading! 
+			 * Also note that the parameter expr is always evaluated.
+			 * This function simply decides whether to return the new result or the old value.
+			 *
+			 * @return {StringType}
+			 */
+			once : {
+
+				fn: function(a)
+				{
+					var curValue = nodeStringValue(this.node),
+						newValue = a.toString();
+
+					// disable NaN, Infinity and -Infinity...
+					newValue = (newValue === 'NaN' /*|| newValue === 'Infinity' || newValue === '-Infinity'*/) ? "" : newValue;
+
+					return (curValue !== "") ? new StringType(curValue) : new StringType(newValue); 
+				},
+
+				args: [
+					{t: 'string'}
+				],
+
+				ret: 'string'
+
+			}
+
+			/**
 			 * The indexed-repeat function... should be used as little as possible
 			 * THIS FUNCTION DOESN'T WORK NICELY WITH POSITION-INJECTION INSIDE REPEATS
 			 *

@@ -2026,6 +2026,26 @@ YUI.add('xpathjs-test', function (Y) {
 				Y.Assert.areSame( "", result.stringValue );
 			},
 
+			testOnce: function( ) {
+				var result;
+
+				// attempt to change value of empty node
+				result = documentEvaluate( "once('aa')", doc.getElementById('FunctionSelectedCaseEmpty'), null, win.XPathResult.STRING_TYPE, null );
+				Y.Assert.areSame( "aa", result.stringValue );
+
+				// attempt to change value of node with existing value
+				result = documentEvaluate( "once('aa')", doc.getElementById('FunctionSelectedCaseSingle'), null, win.XPathResult.STRING_TYPE, null );
+				Y.Assert.areSame( "ab", result.stringValue );
+
+				// controversial: attempt to change value to NaN of empty node
+				result = documentEvaluate( "once(. * 10)", doc.getElementById('FunctionSelectedCaseEmpty'), null, win.XPathResult.STRING_TYPE, null );
+				Y.Assert.areSame( "", result.stringValue );
+
+				// controversial: attempt to change value to Infinity of empty node
+				//result = documentEvaluate( "once( 1 div 0)", doc.getElementById('FunctionSelectedCaseEmpty'), null, win.XPathResult.STRING_TYPE, null );
+				//Y.Assert.areSame( "", result.stringValue );
+			},
+
 			/*testIndexedRepeat: function() {
 				var result, input, i;
 
