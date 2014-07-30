@@ -1,9 +1,9 @@
-XPathJS_JavaRosa
+Enketo-XPathJS
 =======
 
-XPathJS_JavaRosa is fork of XPathJS a pure JavaScript implementation of [XPath 1.0](http://www.w3.org/TR/xpath/) and [DOM Level 3 XPath](http://www.w3.org/TR/DOM-Level-3-XPath/) specifications. 
+Enketo-XPathJS is a fork of XPathJS, a pure JavaScript implementation of [XPath 1.0](http://www.w3.org/TR/xpath/) and [DOM Level 3 XPath](http://www.w3.org/TR/DOM-Level-3-XPath/) specifications. 
 
-This fork extends XPathJS with custom JavaRosa/OpenRosa functions and the 'date' datatype. 
+This fork extends XPathJS with custom ODK/OpenRosa functions and the 'date' datatype. 
 
 
 Features
@@ -51,9 +51,9 @@ Getting Started
 
 Take a look at some [working examples](http://www.pokret.org/xpathjs/examples/) to get a better idea of how to use XPathJS.
 
-Note that JavaRosa [deviates from the XPath spec in a few ways](https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (Enketo includes a workaround for the absolute-paths-within-repeats issue that adjusts an expression before sending it to the XPath evaluator. This way it can easily be removed in the future and the Evaluator stays 'pure'.)
+Note that ODK/OpenRosa [deviates from the XPath spec in a few ways](https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (Enketo includes a workaround for the absolute-paths-within-repeats issue that adjusts an expression before sending it to the XPath evaluator. This way it can easily be removed in the future and the Evaluator stays 'pure'.)
 
-An exception are the ODK deviations for native XPath 1.0 function round() and concat(). These functions were replaced with custom javarosa versions as they do not break the original functionality of the native functions.
+An exception are the ODK deviations for native XPath 1.0 function round(), concat() and position(). These functions were replaced with custom versions as they do not break the original functionality of the native functions.
 
 Take a look at the [**CAVEATS**](https://github.com/andrejpavlovic/xpathjs/blob/master/CAVEATS.md) document to get a better understanding of XPathJS limitations.
 
@@ -61,17 +61,16 @@ Take a look at the [**CAVEATS**](https://github.com/andrejpavlovic/xpathjs/blob/
 Background
 --------
 
-While developing [Enketo](http://blog.aidwebsolutions.com/tag/enketo/) - an offline-web application to conduct surveys in areas with problematic Internet connectivity using the JavaRosa/OpenRosa form format - the need arose for a client-side XPath Processor that could be easily extended. Andrej Pavlovic' excellent XPathJS project was chosen due to the very easily readable code and seemingly robust implementation (and indeed no bugs were found!!) of the DOM Level 3 XPath Processor.
+While developing [Enketo](http://blog.enketo.org/) - an offline-web application to conduct surveys in areas with problematic Internet connectivity using the ODK/OpenRosa form format - the need arose for a client-side XPath Processor that could be easily extended. Andrej Pavlovic' excellent XPathJS project was chosen due to the very easily readable code and seemingly robust implementation (and indeed no bugs were found!) of the DOM Level 3 XPath Processor.
 
 I hope this project helps to promote the adoption of a platform with multiple data collection, entry, collation and analysis apps that use an open format and can work together.
 
 Development
 --------
 
-  * [Source code](https://github.com/MartijnR/xpathjs_javarosa)
-  * [Issue tracker](https://github.com/MartijnR/xpathjs_javarosa/issues)
+  * [Source code](https://github.com/enketo/enketo-xpathjs)
+  * [Issue tracker](https://github.com/enketo/enketo-xpathjs)
 
-XPathJS_javarosa fork is developed by [Martijn van de Rijdt](mailto:martijn@aidwebsolutions.com). You are more than welcome to contribute by [logging issues](https://github.com/MartijnR/xpathjs_javarosa/issues), [sending pull requests](http://help.github.com/send-pull-requests/), or [just giving feedback](mailto:martijn@aidwebsolutions.com).
 
 License
 --------
