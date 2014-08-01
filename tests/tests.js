@@ -2046,6 +2046,36 @@ YUI.add('xpathjs-test', function (Y) {
 				//Y.Assert.areSame( "", result.stringValue );
 			},
 
+			testArea: function() {
+				var result,
+					geoshapeValue1 = '7.9377 -11.5845 0 0;7.9324 -11.5902 0 0;7.927 -11.5857 0 0;7.925 -11.578 0 0;7.9267 -11.5722 0 0;7.9325 -11.5708 0 0;7.9372 -11.5737 0 0;7.9393 -11.579 0 0;7.9377 -11.5845 0 0',
+					geoshapeValue2 = '38.253094215699576 21.756382658677467;38.25021274773806 21.756382658677467;38.25007793942195 21.763892843919166;38.25290886154963 21.763935759263404;38.25146813817506 21.758421137528785';
+
+				result = documentEvaluate("area('"+geoshapeValue1+"')", doc, null, win.XPathResult.NUMBER_TYPE, null);
+				Y.Assert.areSame(2333220.77, result.numberValue);
+
+				//from SurveyCTO/ODK
+				result = documentEvaluate("area('"+geoshapeValue2+"')", doc, null, win.XPathResult.NUMBER_TYPE, null);
+				Y.Assert.areSame(151451.76, result.numberValue);
+
+				result = documentEvaluate("area(./*)", doc.getElementById('FunctionEnclosedArea1'), null, win.XPathResult.NUMBER_TYPE, null);
+				Y.Assert.areSame(2333220.77, result.numberValue);
+
+				// from SurveyCTO/ODK
+				result = documentEvaluate("area(./*)", doc.getElementById('FunctionEnclosedArea2'), null, win.XPathResult.NUMBER_TYPE, null);
+				Y.Assert.areSame(122754.94, result.numberValue);
+
+				// from SurveyCTO/ODK
+				result = documentEvaluate("area(./*)", doc.getElementById('FunctionEnclosedArea3'), null, win.XPathResult.NUMBER_TYPE, null);
+				Y.Assert.areSame(93911.49, result.numberValue);
+
+				result = documentEvaluate("area('')", doc, null, win.XPathResult.NUMBER_TYPE, null);
+				Y.Assert.isNaN(result.numberValue);
+
+				result = documentEvaluate("area('7.9377 -11.5845 0 0;7.9324 -11.5902 0 0')", doc, null, win.XPathResult.NUMBER_TYPE, null);
+				Y.Assert.areSame(0.0, result.numberValue);
+			},
+
 			/*testIndexedRepeat: function() {
 				var result, input, i;
 
