@@ -5002,12 +5002,14 @@ XPathJS = (function(){
 						geopoints = [],
 						latLngs = [];
 
-					if (a instanceof NodeSetType){
+					if (a instanceof NodeSetType && a.value.length > 1){
 						a.value.forEach(function(node){
 							geopoints.push(nodeStringValue(node));
 						});
+					} else if (a instanceof NodeSetType) {
+						geopoints = nodeStringValue(a.value[0]).split(';');
 					} else if (a instanceof StringType) {
-						geopoints = a.value.split(';');
+						geopoints = a.value.split(';');	
 					}
 
 					latLngs = geopoints.map(function(geopoint){

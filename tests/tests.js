@@ -2054,19 +2054,22 @@ YUI.add('xpathjs-test', function (Y) {
 				result = documentEvaluate("area('"+geoshapeValue1+"')", doc, null, win.XPathResult.NUMBER_TYPE, null);
 				Y.Assert.areSame(2333220.77, result.numberValue);
 
+				result = documentEvaluate("area(.)", doc.getElementById('FunctionArea4'), null, win.XPathResult.NUMBER_TYPE, null);
+				Y.Assert.areSame(2333220.77, result.numberValue);
+
 				//from SurveyCTO/ODK
 				result = documentEvaluate("area('"+geoshapeValue2+"')", doc, null, win.XPathResult.NUMBER_TYPE, null);
 				Y.Assert.areSame(151451.76, result.numberValue);
 
-				result = documentEvaluate("area(./*)", doc.getElementById('FunctionEnclosedArea1'), null, win.XPathResult.NUMBER_TYPE, null);
+				result = documentEvaluate("area(./*)", doc.getElementById('FunctionArea1'), null, win.XPathResult.NUMBER_TYPE, null);
 				Y.Assert.areSame(2333220.77, result.numberValue);
 
 				// from SurveyCTO/ODK
-				result = documentEvaluate("area(./*)", doc.getElementById('FunctionEnclosedArea2'), null, win.XPathResult.NUMBER_TYPE, null);
+				result = documentEvaluate("area(./*)", doc.getElementById('FunctionArea2'), null, win.XPathResult.NUMBER_TYPE, null);
 				Y.Assert.areSame(122754.94, result.numberValue);
 
 				// from SurveyCTO/ODK
-				result = documentEvaluate("area(./*)", doc.getElementById('FunctionEnclosedArea3'), null, win.XPathResult.NUMBER_TYPE, null);
+				result = documentEvaluate("area(./*)", doc.getElementById('FunctionArea3'), null, win.XPathResult.NUMBER_TYPE, null);
 				Y.Assert.areSame(93911.49, result.numberValue);
 
 				result = documentEvaluate("area('')", doc, null, win.XPathResult.NUMBER_TYPE, null);
