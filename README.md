@@ -1,9 +1,11 @@
-Enketo-XPathJS
+Enketo-XPathJS [![Build Status](https://travis-ci.org/enketo/enketo-xpathjs.svg?branch=master)](https://travis-ci.org/enketo/enketo-xpathjs)
 =======
 
 Enketo-XPathJS is a fork of XPathJS, a pure JavaScript implementation of [XPath 1.0](http://www.w3.org/TR/xpath/) and [DOM Level 3 XPath](http://www.w3.org/TR/DOM-Level-3-XPath/) specifications. 
 
 This fork extends XPathJS with custom ODK/OpenRosa functions and the 'date' datatype. 
+
+###This library is no longer being actively developed. It will soon be replaced by [Enketo Wicked Good XPath](https://github.com/enketo/enketo-wicked-good-xpath).
 
 
 Features
