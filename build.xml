@@ -25,7 +25,7 @@
 		</apply>
 		
 		<!-- combine files -->
-		<concat destfile="build/xpathjs_javarosa.js">
+		<concat destfile="build/enketo-xpathjs.js">
 			<filelist>
 				<file name="src/engine.js"/>
 				<file name="build/parser.js"/>
@@ -34,7 +34,7 @@
 		
 		<!-- minify files -->
 		<apply executable="java" parallel="false" dest="build">
-			<fileset file="build/xpathjs_javarosa.js"/>
+			<fileset file="build/enketo-xpathjs.js"/>
 			<arg line="-jar"/>
 			<arg path="${yuicompressor.file}"/>
 			<srcfile/>
