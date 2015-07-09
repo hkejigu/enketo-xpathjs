@@ -87,5 +87,7 @@ In order to build the code yourself, you will need the following tools:
   2. [Node.js](http://nodejs.org/)
   3. [PEG.js](http://pegjs.majda.cz/) (_npm install --global pegjs_)
 
+To build, copy/clone the repository and then:
 
-Copy/Clone the repository and run build.xml with ANT.
+    git submodule update --init --recursive && \
+    ant
