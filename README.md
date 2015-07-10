@@ -88,3 +88,9 @@ To build, copy/clone the repository and then:
 
     git submodule update --init --recursive && \
     ant
+
+
+Change log
+--------
+
+See [change log](./CHANGELOG.md)
