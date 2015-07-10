@@ -2,17 +2,17 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-[Unreleased] 
+[1.2.1] - 2015-07-10 
 ------------------------
 ##### Removed
 - Obsolete files
 
-[1.2.0] - 03-17-2015
+[1.2.0] - 2015-03-17
 ------------------------
 ##### Changed
 - filenames of built js files (WARNING!)
 
-[1.1.0] - 03-11-2015
+[1.1.0] - 2015-3-11
 ---------------------
 ##### Added
 - everything (first 'version')
