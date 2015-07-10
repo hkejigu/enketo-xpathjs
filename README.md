@@ -21,10 +21,7 @@ Getting Started
 
   1. Include with `npm install enketo-xpathjs --save` or `bower install enketo-xpathjs --save` or manually download and add [build/enketo-xpathjs.min.js](https://raw.github.com/enketo/enketo-xpathjs/master/build/enketo-xpathjs.min.js) file.
   
-  2. Include enketo-xpathjs.min.js in the \<head> of your HTML document.
-     NOTE: Make sure HTML document is in strict mode i.e. it has a !DOCTYPE declaration at the top!
-  
-  3. Initialize XPathJS:
+  2. Initialize XPathJS:
      
      ```javascript
     // bind XPath methods to document and window objects
@@ -32,7 +29,7 @@ Getting Started
     XPathJS.bindDomLevel3XPath();
     ```
      
-  4. You can now use XPath expressions to query the DOM:
+  3. You can now use XPath expressions to query the DOM:
      
      ```javascript
     var result = document.evaluate(
@@ -51,7 +48,7 @@ Getting Started
 
 Take a look at some [working examples](http://www.pokret.org/xpathjs/examples/) to get a better idea of how to use XPathJS.
 
-Note that ODK/OpenRosa [deviates from the XPath spec in a few ways](https://bitbucket.org/javarosa/javarosa/wiki/XFormDeviations). Since these deviations deal with core XPath 1.0 functions, and will eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. (Enketo includes a workaround for the absolute-paths-within-repeats issue that adjusts an expression before sending it to the XPath evaluator. This way it can easily be removed in the future and the Evaluator stays 'pure'.)
+Note that [ODK/OpenRosa spec](http://opendatakit.github.io/odk-xform-spec/) deviates from the XPath spec in a few ways. Since these deviations deal with core XPath 1.0 functions, and will (maybe) eventually be rectified, no workarounds have been introduced in this fork to mimic the deviated behaviour. Where necessary Enketo includes workarounds to correct expressions before they are sent to the XPath evaluator. This way it can easily be removed in the future and the Evaluator stays 'pure'.
 
 An exception are the ODK deviations for native XPath 1.0 function round(), concat() and position(). These functions were replaced with custom versions as they do not break the original functionality of the native functions.
 

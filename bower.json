@@ -1,6 +1,5 @@
 {
   "name": "enketo-xpathjs",
-  "version": "1.2.0",
   "homepage": "https://github.com/enketo/enketo-xpathjs",
   "authors": [
     "Martijn van de Rijdt <martijn@enketo.org>"
@@ -15,7 +14,7 @@
     "Enketo",
     "ODK"
   ],
-  "license": "GPLv3",
+  "license": "AGPL-3.0",
   "ignore": [
     "**/.*",
     "node_modules",
