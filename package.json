@@ -2,11 +2,12 @@
   "name": "enketo-xpathjs",
   "description": "JS implementation of XPath extended with OpenRosa functions and the date datatype",
   "homepage": "https://enketo.org",
-  "version": "1.2.2",
+  "version": "1.2.3",
   "repository": {
     "type": "git",
     "url": "https://github.com/enketo/enketo-xpathjs"
   },
+  "main": "build/enketo-xpathjs",
   "scripts": {
     "test": "grunt test"
   },
