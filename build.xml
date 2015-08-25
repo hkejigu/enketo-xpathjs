@@ -29,6 +29,7 @@
 			<filelist>
 				<file name="src/engine.js"/>
 				<file name="build/parser.js"/>
+				<file name="src/umd.js"/>
 			</filelist>
 		</concat>
 		

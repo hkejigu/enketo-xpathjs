@@ -4,5 +4,9 @@
 	"browser": false,
 	"jquery": false,
 	"sub": true,
-    "esnext": true
+    "esnext": true,
+    "globals": {
+    	"define": true,
+    	"XPathJS": true
+    }
 }

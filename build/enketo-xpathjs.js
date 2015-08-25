@@ -1,6 +1,4 @@
 /**
- * Copyright (C) 2012 Martijn van de Rijdt for JavaRosa functions added to XPathJS to make XPathJS_javarosa
- *
  * Original copyright notice for XPathJS:
  *
  * Copyright (C) 2011 Andrej Pavlovic for XPathJS
@@ -21,9 +19,8 @@
  */
 
 /* global window */
-/* global XPathJS */
 
-XPathJS = (function(){
+var XPathJS = (function(){
 	var XPathException,
 		XPathEvaluator,
 		XPathExpression,
@@ -8922,3 +8919,18 @@ XPathJS._parser = (function() {
     parse:       parse
   };
 })();
+'use strict';
+
+// export as AMD/CommonJS/Global-friendly module
+(function (root, factory) {
+    if (typeof define === 'function' && define.amd) {
+        define([], factory);
+    } else if (typeof module === 'object' && module.exports) {
+        module.exports = factory();
+    } else {
+        // Browser globals (root is window)
+        root.returnExports = factory();
+  }
+}(this, function () {
+    return XPathJS;
+}));
