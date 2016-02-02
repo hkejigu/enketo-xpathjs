@@ -1,4 +1,4 @@
-Enketo-XPathJS [![Build Status](https://travis-ci.org/enketo/enketo-xpathjs.svg?branch=master)](https://travis-ci.org/enketo/enketo-xpathjs)
+Enketo-XPathJS [![npm version](https://badge.fury.io/js/enketo-xpathjs.svg)](http://badge.fury.io/js/enketo-xpathjs) [![Build Status](https://travis-ci.org/enketo/enketo-xpathjs.svg?branch=master)](https://travis-ci.org/enketo/enketo-xpathjs)
 =======
 
 Enketo-XPathJS is a fork of XPathJS, a pure JavaScript implementation of [XPath 1.0](http://www.w3.org/TR/xpath/) and [DOM Level 3 XPath](http://www.w3.org/TR/DOM-Level-3-XPath/) specifications. 
