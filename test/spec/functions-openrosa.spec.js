@@ -351,42 +351,35 @@ describe('Custom "OpenRosa" functions', function() {
     it('min()', function() {
         [
             ["min(self::*)", doc.getElementById('FunctionNumberCaseNumber'), 123],
+            ["min(self::*)", doc.getElementById('FunctionMaxMinCaseEmpty'), NaN],
             ["min(*)", doc.getElementById('FunctionNumberCaseNumberMultiple'), -10],
-            ["min(*)", doc.getElementById('FunctionSumCaseJavarosa'), -10],
             ["min(*)", doc.getElementById('FunctionMinCase'), 5],
-            ["min(1, 2, 3)", doc, 1]
-        ].forEach(function(t) {
-            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
-            expect(result.numberValue).to.equal(t[2]);
-        });
-
-        [
-            ["min(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple')]
+            ["min(*)", doc.getElementById('FunctionMaxMinWithEmpty'), NaN],
+            ["min(1, 2, 3)", doc, 1],
+            ["min('')", doc, NaN],
+            ["min(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple'), NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
             expect(result.numberValue).to.be.a('number');
-            expect(result.numberValue).to.deep.equal(NaN);
+            expect(result.numberValue).to.deep.equal(t[2]);
         });
+
     });
 
     it('max()', function() {
         [
             ["max(self::*)", doc.getElementById('FunctionNumberCaseNumber'), 123],
+            ["max(self::*)", doc.getElementById('FunctionMaxMinCaseEmpty'), NaN],
             ["max(*)", doc.getElementById('FunctionNumberCaseNumberMultiple'), 99],
-            ["max(*)", doc.getElementById('FunctionSumCaseJavarosa'), 15],
             ["max(*)", doc.getElementById('FunctionMaxCase'), -5],
-            ["max(1, 2, 3)", doc, 3]
-        ].forEach(function(t) {
-            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
-            expect(result.numberValue).to.equal(t[2]);
-        });
-
-        [
-            ["max(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple')]
+            ["max(*)", doc.getElementById('FunctionMaxMinWithEmpty'), NaN],
+            ["max(1, 2, 3)", doc, 3],
+            ["max('')", doc, NaN],
+            ["max(node())", doc.getElementById('FunctionNumberCaseNotNumberMultiple'), NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
             expect(result.numberValue).to.be.a('number');
-            expect(result.numberValue).to.deep.equal(NaN);
+            expect(result.numberValue).to.deep.equal(t[2]);
         });
     });
 

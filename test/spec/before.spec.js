@@ -12,7 +12,7 @@ before(function(done) {
 
     iframe.onload = function() {
         var script = document.createElement('script');
-        // TODO: should load parser and engine separately to facilate development
+        // TODO: should load parser and engine separately to facilitate development
         script.setAttribute('src', '/base/build/enketo-xpathjs.js');
 
         script.onload = function() {

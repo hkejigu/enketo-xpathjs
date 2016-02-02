@@ -1,6 +1,16 @@
 ## Change Log
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
+[1.2.4] - 2016-02-02
+-------------------------
+##### Fixed
+- Min() and max() return undefined for empty node
+- Min() and max() do not return NaN for list that includes an empty node
+
+[1.2.3] - 2015-08-25
+-------------------------
+##### Changed
+- Added main to package.json
 
 [1.2.2] - 2015-08-25
 ------------------------

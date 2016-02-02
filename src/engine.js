@@ -4626,7 +4626,7 @@ var XPathJS = (function(){
 							for(i = 0; i < nodeset.length; i++)
 							{
 								val = new StringType(nodeStringValue(nodeset[i]));
-								if (val && val.toString() !== '')
+								if (val)
 								{
 									min = (min) ? Math.min(min, val.toNumber()) : val.toNumber();
 								}
@@ -4635,7 +4635,7 @@ var XPathJS = (function(){
 						else 
 						{
 							val = new StringType(arguments[i].toString());
-							if (val && val.toString() !== '')
+							if (val)
 							{
 								min = (min) ? Math.min(min, val.toNumber()) : val.toNumber();
 							}
@@ -4678,7 +4678,7 @@ var XPathJS = (function(){
 							for(i = 0; i < nodeset.length; i++)
 							{
 								val = new StringType(nodeStringValue(nodeset[i]));
-								if (val && val.toString() !== '')
+								if (val)
 								{
 									max = (max) ? Math.max(max, val.toNumber()) : val.toNumber();
 								}
@@ -4686,7 +4686,7 @@ var XPathJS = (function(){
 						}
 						else {
 							val = new StringType(arguments[i].toString());
-							if (val && val.toString() !== '')
+							if (val)
 							{
 								max = (max) ? Math.max(max, val.toNumber()) : val.toNumber();
 							}
