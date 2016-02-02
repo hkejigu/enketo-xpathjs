@@ -1,18 +1,11 @@
 /*jshint node:true*/
-"use strict";
+'use strict';
 
 module.exports = function(grunt) {
 
-	require( 'time-grunt' )( grunt );
+	require('time-grunt')(grunt);
 
 	grunt.initConfig({
-		php: {
-			server: {
-				options: {
-					port: 8080
-				}
-			}
-		},
 		karma: {
 			options: {
 				singleRun: true,
@@ -29,12 +22,8 @@ module.exports = function(grunt) {
 		}
 	});
 
-	grunt.loadNpmTasks('grunt-php');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('time-grunt');
-
-	grunt.registerTask('server', ['php:server:keepalive']);
-	grunt.registerTask('default', ['php:server:keepalive']);
 
 	grunt.registerTask('test', ['karma:headless']);
 };
