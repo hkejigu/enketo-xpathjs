@@ -101,5 +101,3 @@ Change log
 --------
 
 See [change log](./CHANGELOG.md)
-=======
-
