@@ -1,7 +1,7 @@
 // Karma configuration
 // Generated on Wed Mar 04 2015 15:02:33 GMT-0700 (MST)
 
-"use strict";
+'use strict';
 
 module.exports = function(config) {
     config.set({
@@ -17,7 +17,7 @@ module.exports = function(config) {
 
         // list of files / patterns to load in the browser
         files: [{
-                pattern: 'build/**/*.js',
+                pattern: 'dist/**/*.js',
                 included: false
             }, {
                 pattern: 'test/**/*.xml',

@@ -18,7 +18,7 @@ module.exports = function(grunt) {
         peg: {
             dist: {
                 options: {
-                    exportVar: "XPathJS._parser"
+                    exportVar: 'XPathJS._parser'
                 },
                 src: 'src/parser.pegjs',
                 dest: 'dist/parser.js'
@@ -31,14 +31,14 @@ module.exports = function(grunt) {
                     'src/engine.js',
                     'dist/parser.js'
                 ],
-                dest: 'dist/xpathjs.js'
+                dest: 'dist/enketo-xpathjs.js'
             }
         },
 
         uglify: {
             dist: {
-                src: 'dist/xpathjs.js',
-                dest: 'dist/xpathjs.min.js'
+                src: 'dist/enketo-xpathjs.js',
+                dest: 'dist/enketo-xpathjs.min.js'
             }
         },
 
