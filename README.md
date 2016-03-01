@@ -9,7 +9,7 @@ This fork extends XPathJS with custom ODK/OpenRosa functions and the 'date' data
 Features
 --------
 
-  * Works in all major browsers: IE6+, Firefox, Chrome, Safari, Opera
+  * Works in all major browsers: IE8+, Firefox, Chrome, Safari, Opera
   * Supports XML namespaces!
   * No external dependencies, include just a single .js file
   * Regression tested against [hundreds of unit test cases](http://projects.aidwebsolutions.com/xpathjs_javarosa/tests/).
@@ -20,6 +20,9 @@ Getting Started
 --------
 
   1. Include with `npm install enketo-xpathjs --save` or `bower install enketo-xpathjs --save` or manually download and add [build/enketo-xpathjs.min.js](https://raw.github.com/enketo/enketo-xpathjs/master/build/enketo-xpathjs.min.js) file.
+  
+  2. Include enketo-xpathjs.min.js in the \<head> of your HTML document.
+     NOTE: Make sure HTML document is in strict mode i.e. it has a !DOCTYPE declaration at the top!
   
   2. Initialize XPathJS:
      
@@ -80,17 +83,17 @@ Build
 
 In order to build the code yourself, you will need the following tools:
 
-  1. [Apache Ant](http://ant.apache.org/)
-  2. [Node.js](http://nodejs.org/)
-  3. [PEG.js](http://pegjs.majda.cz/) (_npm install --global pegjs_)
 
-To build, copy/clone the repository and then:
-
-    git submodule update --init --recursive && \
-    ant
-
+```bash
+git clone https://github.com/andrejpavlovic/xpathjs.git
+cd xpathjs
+npm install
+grunt dist
+```
 
 Change log
 --------
 
 See [change log](./CHANGELOG.md)
+=======
+

@@ -6,6 +6,42 @@ module.exports = function(grunt) {
 	require('time-grunt')(grunt);
 
 	grunt.initConfig({
+
+        clean: {
+            dist: {
+                src: [
+                    'dist'
+                ]
+            }
+        },
+
+        peg: {
+            dist: {
+                options: {
+                    exportVar: "XPathJS._parser"
+                },
+                src: 'src/parser.pegjs',
+                dest: 'dist/parser.js'
+            }
+        },
+
+        concat: {
+            dist: {
+                src: [
+                    'src/engine.js',
+                    'dist/parser.js'
+                ],
+                dest: 'dist/xpathjs.js'
+            }
+        },
+
+        uglify: {
+            dist: {
+                src: 'dist/xpathjs.js',
+                dest: 'dist/xpathjs.min.js'
+            }
+        },
+
 		karma: {
 			options: {
 				singleRun: true,
@@ -22,8 +58,19 @@ module.exports = function(grunt) {
 		}
 	});
 
+    grunt.loadNpmTasks('grunt-contrib-clean');
+    grunt.loadNpmTasks('grunt-contrib-concat');
+    grunt.loadNpmTasks('grunt-contrib-uglify');
+    grunt.loadNpmTasks('grunt-peg');
 	grunt.loadNpmTasks('grunt-karma');
 	grunt.loadNpmTasks('time-grunt');
 
+    grunt.registerTask('dist', [
+        'clean:dist',
+        'peg:dist',
+        'concat:dist',
+        'uglify:dist'
+    ]);
 	grunt.registerTask('test', ['karma:headless']);
 };
+
