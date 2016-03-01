@@ -91,6 +91,12 @@ npm install
 grunt dist
 ```
 
+Test
+----------
+
+Run tests headlessly with `grunt karma:headless` and in browsers with `grunt karma:browsers`.
+
+
 Change log
 --------
 
