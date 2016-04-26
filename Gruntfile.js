@@ -29,7 +29,8 @@ module.exports = function(grunt) {
             dist: {
                 src: [
                     'src/engine.js',
-                    'dist/parser.js'
+                    'dist/parser.js',
+                    'src/umd.js'
                 ],
                 dest: 'dist/enketo-xpathjs.js'
             }
