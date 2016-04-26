@@ -2,14 +2,14 @@
   "name": "enketo-xpathjs",
   "description": "JS implementation of XPath extended with OpenRosa functions and the date datatype",
   "homepage": "https://enketo.org",
-  "version": "1.2.4",
+  "version": "1.3.0",
   "repository": {
     "type": "git",
     "url": "https://github.com/enketo/enketo-xpathjs"
   },
   "main": "dist/enketo-xpathjs",
   "scripts": {
-    "test": "grunt test"
+    "test": "grunt karma:headless"
   },
   "author": "Andrej Pavlovic <andrej.pavlovic@pokret.org>",
   "contributors": [

@@ -446,18 +446,143 @@ describe('Custom "OpenRosa" functions', function() {
 
     it('pow()', function() {
         [
-            ["pow(2, 2)", doc, 4],
-            ["pow(2, 0)", doc, 1],
-            ["pow(0,4)", doc, 0],
-            ["pow(2.5, 2)", doc, 6.25],
-            ["pow(0.5, 2)", doc, 0.25],
-            ["pow(-1, 2)", doc, 1],
-            ["pow(-1, 3)", doc, -1],
-            ["pow(4, 0.5)", doc, 2],
-            ["pow(16, 0.25)", doc, 2]
+            ['pow(2, 2)', doc, 4],
+            ['pow(2, 0)', doc, 1],
+            ['pow(0,4)', doc, 0],
+            ['pow(2.5, 2)', doc, 6.25],
+            ['pow(0.5, 2)', doc, 0.25],
+            ['pow(-1, 2)', doc, 1],
+            ['pow(-1, 3)', doc, -1],
+            ['pow(4, 0.5)', doc, 2],
+            ['pow(16, 0.25)', doc, 2]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
-            expect(result.numberValue).to.equal(t[2]);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+
+    it('sin()', function() {
+        [
+            ['sin(2)', doc, 0.9092974268256817],
+            ['sin("a")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('cos()', function() {
+        [
+            ['cos(2)', doc, -0.4161468365471424],
+            //['cos("a")', doc, NaN],
+            ['cos("NaN")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('tan()', function() {
+        [
+            ['tan(2)', doc, -2.185039863261519],
+            ['tan("a")', doc, NaN],
+            ['tan("NaN")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('acos()', function() {
+        [
+            ['acos(0.5)', doc, 1.0471975511965976],
+            ['acos(-1)', doc, 3.141592653589793],
+            ['acos(2)', doc, NaN],
+            ['acos("a")', doc, NaN],
+            ['acos("NaN")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('asin()', function() {
+        [
+            ['asin(0.5)', doc, 0.5235987755982988],
+            ['asin(-1)', doc, -1.5707963267948966],
+            ['asin(2)', doc, NaN],
+            ['asin("a")', doc, NaN],
+            ['asin("NaN")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('atan()', function() {
+        [
+            ['atan(0.5)', doc, 0.46364760900080615],
+            ['atan(-1)', doc, -0.7853981633974483],
+            ['atan("a")', doc, NaN],
+            ['atan("NaN")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('atan2()', function() {
+        [
+            ['atan2(2,3)', doc, 0.5880026035475675],
+            ['atan2(2, "NaN")', doc, NaN],
+            ['atan2(2, "a")', doc, NaN],
+            ['atan2("NaN", 2)', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('log10()', function() {
+        [
+            // note this has a tiny rounding error because Math.log10 is not supported in PhantomJS
+            ['log10(2)', doc, 0.30102999566398114],
+            ['log10("NaN")', doc, NaN],
+            ['log10("a")', doc, NaN],
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('pi()', function() {
+        [
+            ['pi()', doc, 3.141592653589793],
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+    it('exp()', function() {
+        [
+            ['exp(2)', doc, 7.38905609893065],
+            ['exp("NaN")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
+        });
+    });
+
+     it('sqrt()', function() {
+        [
+            ['sqrt(4)', doc, 2],
+            ['sqrt(-2)', doc, NaN],
+            ['sqrt("NaN")', doc, NaN]
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[2]);
         });
     });
 

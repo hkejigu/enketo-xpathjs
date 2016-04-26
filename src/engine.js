@@ -4963,6 +4963,245 @@ var XPathJS = (function(){
 
 
 			/**
+			 * The sin function returns the sine of the argument, expressed in radians.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-sin
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			sin : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.sin(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+
+			/**
+			 * The cos function returns the cosine of the argument, expressed in radians.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-cos
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			cos : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.cos(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+			/**
+			 * The tan function returns the tangent of the argument, expressed in radians.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-tan
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			tan : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.tan(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+
+			/**
+			 * The acos function returns the arc cosine of the argument, the result being in the range zero to +π radians.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-acos
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			acos : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.acos(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+			/**
+			 * The asin function returns the arc sine of the argument, the result being in the range -π/2 to +π/2 radians.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-asin
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			asin : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.asin(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+
+			/**
+			 * The atan function returns the arc tangent of the argument, the result being in the range -π/2 to +π/2 radians.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-atan
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			atan : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.atan(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+			/**
+			 * The atan2 function returns the angle in radians subtended at the origin by the point on a plane 
+			 * with coordinates (x, y) and the positive x-axis, the result being in the range -π to +π.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-atan2
+			 * @param {NumberType} a
+			 * @param {NumberType} b
+			 * @return {NumberType}
+			 */
+			atan2 : {
+
+				fn: function(a, b)
+				{
+					return new NumberType( Math.atan2(a, b) ) ;
+				},
+
+				args: [
+					{t: 'number'},
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+			/**
+			 * The log10 function returns the base-ten logarithm of the argument.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-log10
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			log10 : {
+
+				fn: function(a)
+				{
+					// Math.log10 doesn't have cross-browser support. The polyfill has a smallrounding error.
+					if (typeof Math.log10 !== 'undefined'){
+						return new NumberType( Math.log10(a) );
+					} else {
+						return new NumberType( Math.log(a) / Math.LN10 ) ;
+					}
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+			/**
+			 * The pi function returns an approximation to the mathematical constant π.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-pi
+			 * @return {NumberType}
+			 */
+			pi : {
+
+				fn: function()
+				{
+					return new NumberType( Math.PI ) ;
+				},
+
+				args: [],
+
+				ret: 'number'
+			},
+
+			/**
+			 * The exp function returns the value of e^x.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-exp
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			exp : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.exp(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+			/**
+			 * The sqrt function returns the non-negative square root of the argument.
+			 *
+			 * @see https://www.w3.org/TR/2014/REC-xpath-functions-30-20140408/#func-math-sqrt
+			 * @param {NumberType} a
+			 * @return {NumberType}
+			 */
+			sqrt : {
+
+				fn: function(a)
+				{
+					return new NumberType( Math.sqrt(a) ) ;
+				},
+
+				args: [
+					{t: 'number'}
+				],
+
+				ret: 'number'
+			},
+
+			/**
 			 * The version function returns the value of the version attribute of the root element
 			 *
 			 * @return {StringType}

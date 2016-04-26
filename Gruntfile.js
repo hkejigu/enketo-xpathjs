@@ -71,6 +71,5 @@ module.exports = function(grunt) {
         'concat:dist',
         'uglify:dist'
     ]);
-	grunt.registerTask('test', ['karma:headless']);
 };
 
