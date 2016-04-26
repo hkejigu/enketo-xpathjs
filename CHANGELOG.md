@@ -2,10 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-[Unreleased]
+[1.3.1] - 2016-04-27
 -------------------------
 ##### Fixed
 - No longer working as CommonJS module.
+- Some rounding errors in new tests on Travis.
 
 [1.3.0] - 2016-04-26
 -------------------------

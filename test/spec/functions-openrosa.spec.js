@@ -496,39 +496,42 @@ describe('Custom "OpenRosa" functions', function() {
 
     it('acos()', function() {
         [
-            ['acos(0.5)', doc, 1.0471975511965976],
-            ['acos(-1)', doc, 3.141592653589793],
+            ['acos(0.5)', doc, 1.047197551196598],
+            ['acos(-1)', doc,  3.141592653589793],
             ['acos(2)', doc, NaN],
             ['acos("a")', doc, NaN],
             ['acos("NaN")', doc, NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
-            expect(result.numberValue).to.deep.equal(t[2]);
+            // rounding error on Travis
+            expect(Math.round(result.numberValue * Math.pow(10,15))/Math.pow(10,15)).to.deep.equal(t[2]);
         });
     });
 
     it('asin()', function() {
         [
-            ['asin(0.5)', doc, 0.5235987755982988],
-            ['asin(-1)', doc, -1.5707963267948966],
+            ['asin(0.5)', doc, 0.523598775598299],
+            ['asin(-1)', doc, -1.570796326794896],
             ['asin(2)', doc, NaN],
             ['asin("a")', doc, NaN],
             ['asin("NaN")', doc, NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
-            expect(result.numberValue).to.deep.equal(t[2]);
+            // rounding error on Travis
+            expect(Math.round(result.numberValue * Math.pow(10,15))/Math.pow(10,15)).to.deep.equal(t[2]);
         });
     });
 
     it('atan()', function() {
         [
-            ['atan(0.5)', doc, 0.46364760900080615],
-            ['atan(-1)', doc, -0.7853981633974483],
+            ['atan(0.5)', doc, 0.463647609000806],
+            ['atan(-1)', doc, -0.785398163397448],
             ['atan("a")', doc, NaN],
             ['atan("NaN")', doc, NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
-            expect(result.numberValue).to.deep.equal(t[2]);
+                        // rounding error on Travis
+            expect(Math.round(result.numberValue * Math.pow(10,15))/Math.pow(10,15)).to.deep.equal(t[2]);
         });
     });
 
