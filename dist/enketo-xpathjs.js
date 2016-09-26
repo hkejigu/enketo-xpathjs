@@ -939,10 +939,6 @@ var XPathJS = (function(){
 				rightValues,
 				result
 			;
-//			console.debug('right:');
-//			console.debug(right);
-//			console.debug('left:');
-//			console.debug(left);
 			if (left instanceof NodeSetType)
 			{
 				if (right instanceof NodeSetType)
@@ -1001,10 +997,8 @@ var XPathJS = (function(){
 					{
 						if (right instanceof StringType)
 						{
-							//console.debug('found right date string: '+right+' and will convert to a Date object');
 							right = new DateType(right);
 						}
-						//console.debug('found right date type: '+right);
 
 						leftValues = left.stringValues();
 						
@@ -1081,10 +1075,8 @@ var XPathJS = (function(){
 					{
 						if (left instanceof StringType)
 						{
-							//console.debug('found left date string: '+left.value+' and will convert to a Date object');
 							left = new DateType(left);
 						}
-						//console.debug('found date type: '+left.value);
 
 						rightValues = right.stringValues();
 
@@ -1580,8 +1572,6 @@ var XPathJS = (function(){
 		return this.value;
 	}
 	NodeSetType.prototype.toDate = function(){
-		//console.log('Nodeset.toDate() going to return:')
-		//console.log((new StringType(this.toString())).toDate());
 		return (new StringType(this.toString())).toDate();
 	}
 	NodeSetType.prototype.sortDocumentOrder = function() {
@@ -1700,11 +1690,7 @@ var XPathJS = (function(){
 			//seems like an ugly hack, original commented out below
 			obj = new StringType(nodeStringValue(this.value[i]));
 			if (obj.isDateString()){
-				//console.debug('obj:');
-				//console.debug(obj);
 				obj = new DateType(obj.value);
-				//console.debug('converted obj:');
-				//console.debug(obj);
 			} 
 			values.push(obj);
 			//values.push(new StringType(nodeStringValue(this.value[i])));
@@ -1789,7 +1775,6 @@ var XPathJS = (function(){
 		if (!/('|")?[0-9]{4}(-|\/)[0-9]{2}(-|\/)[0-9]{2}('|")?/.test(this.value)){
 			return false;
 		}
-		console.debug('found string value that passes check for datestringiness: '+this.value);
 		return true;
 	}
 	
@@ -4400,13 +4385,6 @@ var XPathJS = (function(){
 
 				fn: function(cond, a, b)
 				{
-					//console.log('type: '+cond.type);
-					//probably needs to be changed (bug?: emptyNode.toBoolean = true, but should be false)
-					//if (cond instanceof NodeSetType){
-						//cond = cond.toString();
-					//	console.log('cond:');
-					//	console.log(cond);
-					//}
 					return ( cond.toBoolean() ? a : b );
 				},
 
@@ -4424,12 +4402,6 @@ var XPathJS = (function(){
 
 				fn: function(obj)
 				{
-					//console.log('typeof object: '+typeof obj);
-					//console.log(obj);
-					//if (obj instanceOf NumberType){
-					//	return new DateType(new Date(obj));
-					//}
-					//else 
 					return new DateType(obj.toDate());
 				},
 
@@ -4534,7 +4506,7 @@ var XPathJS = (function(){
 
 			uuid: {
 				/**
-				 * The uuid function returns an RFC 1422 Version 4 UUID string.
+				 * The uuid function returns an RFC 4122 Version 4 UUID string.
 				 * 
 				 * @see http://opendatakit.org/help/form-design/binding/
 				 * @return {StringType}
@@ -4561,12 +4533,16 @@ var XPathJS = (function(){
 				 * @return {NumberType}
 				 * 
 				 */
-				fn: function(number)
+				fn: function(str)
 				{
-					return new NumberType(parseInt(number));
+					// Using ParseInt, creates a problem for very small or large numbers that are displayed in scientific
+					// notation. E.g. parseInt(1/47999799999, 10) is 2 instead of 0 (2.08e-11)
+					// Therefore this function is essentially an alias for floor(). It's argument is a string though, 
+					// but I don't think it behaves different from floor in any way.
+					return new NumberType( Math.floor( str.toNumber() ) );
 				}, 
 				args: [
-					{t: 'number'}
+					{t: 'string'}
 				],
 
 				ret: 'number'
@@ -4645,7 +4621,6 @@ var XPathJS = (function(){
 				{
 					var i, min, val, nodeset;
 
-					console.log('min args', arguments);
 					for (i = 0; i < arguments.length; i++)
 					{
 
