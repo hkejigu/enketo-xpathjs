@@ -4533,12 +4533,16 @@ var XPathJS = (function(){
 				 * @return {NumberType}
 				 * 
 				 */
-				fn: function(number)
+				fn: function(str)
 				{
-					return new NumberType(parseInt(number));
+					// Using ParseInt, creates a problem for very small or large numbers that are displayed in scientific
+					// notation. E.g. parseInt(1/47999799999, 10) is 2 instead of 0 (2.08e-11)
+					// Therefore this function is essentially an alias for floor(). It's argument is a string though, 
+					// but I don't think it behaves different from floor in any way.
+					return new NumberType( Math.floor( str.toNumber() ) );
 				}, 
 				args: [
-					{t: 'number'}
+					{t: 'string'}
 				],
 
 				ret: 'number'

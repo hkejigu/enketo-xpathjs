@@ -166,7 +166,8 @@ describe('Custom "OpenRosa" functions', function() {
             ["number(date('1969-12-31'))", -1],
             ["number(date('2008-09-05'))", 14127],
             ["number(date('1941-12-07'))", -10252],
-            ["number('2008-09-05')", 14127]
+            ["number('2008-09-05')", 14127],
+            ["number( 1 div 1000000000 )", 1e-9]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
             expect(t[1]).to.equal(result.numberValue);
@@ -296,7 +297,7 @@ describe('Custom "OpenRosa" functions', function() {
             //   '2012 | 12 | 08 | 8 | Aug | 08 | 8 | 06 | 6 | 07 | 08 | 123 | Wed'
             //]
         ].forEach(function(t) {
-            var expr = t[0]; //
+            var expr = t[0];
             var result = documentEvaluate(expr, t[1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
             expect(result.stringValue).to.equal(t[2]);
             // do the same tests for the alias format-date-string()
@@ -318,13 +319,18 @@ describe('Custom "OpenRosa" functions', function() {
             ["int(2.51)", 2],
             ["int(2)", 2],
             ["int('2.1')", 2],
-            ["int('2.51')", 2]
+            ["int('2.51')", 2], 
+            ["int(1 div 47999799999)", 0], //(2.08e-11)
         ].forEach(function(t) {
             result = documentEvaluate(t[0], doc, null, win.XPathResult.NUMBER_TYPE);
             expect(result.numberValue).to.equal(t[1]);
         });
 
         result = documentEvaluate('int("a")', doc, null, win.XPathResult.NUMBER_TYPE);
+        expect(result.numberValue).to.deep.equal(NaN);
+
+        // XPath 1.0 does not deal with scientific notation
+        result = documentEvaluate('int("7.922021953507237e-12")', doc, null, win.XPathResult.NUMBER_TYPE);
         expect(result.numberValue).to.deep.equal(NaN);
     });
 
@@ -363,7 +369,6 @@ describe('Custom "OpenRosa" functions', function() {
             expect(result.numberValue).to.be.a('number');
             expect(result.numberValue).to.deep.equal(t[2]);
         });
-
     });
 
     it('max()', function() {
@@ -390,7 +395,8 @@ describe('Custom "OpenRosa" functions', function() {
             ["round(1.234, 2)", 1.23],
             ["round(1.234, 5)", 1.234],
             ["round(1.234, 0)", 1],
-            ["round(33.33, -1)", 30]
+            ["round(33.33, -1)", 30],
+            ["round(1 div 47999799999)", 0], //(2.08e-11)
         ].forEach(function(t) {
             result = documentEvaluate(t[0], doc, null, win.XPathResult.NUMBER_TYPE, null);
             expect(result.numberValue).to.equal(t[1]);
@@ -497,14 +503,14 @@ describe('Custom "OpenRosa" functions', function() {
     it('acos()', function() {
         [
             ['acos(0.5)', doc, 1.047197551196598],
-            ['acos(-1)', doc,  3.141592653589793],
+            ['acos(-1)', doc, 3.141592653589793],
             ['acos(2)', doc, NaN],
             ['acos("a")', doc, NaN],
             ['acos("NaN")', doc, NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
             // rounding error on Travis
-            expect(Math.round(result.numberValue * Math.pow(10,15))/Math.pow(10,15)).to.deep.equal(t[2]);
+            expect(Math.round(result.numberValue * Math.pow(10, 15)) / Math.pow(10, 15)).to.deep.equal(t[2]);
         });
     });
 
@@ -518,7 +524,7 @@ describe('Custom "OpenRosa" functions', function() {
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
             // rounding error on Travis
-            expect(Math.round(result.numberValue * Math.pow(10,15))/Math.pow(10,15)).to.deep.equal(t[2]);
+            expect(Math.round(result.numberValue * Math.pow(10, 15)) / Math.pow(10, 15)).to.deep.equal(t[2]);
         });
     });
 
@@ -530,8 +536,8 @@ describe('Custom "OpenRosa" functions', function() {
             ['atan("NaN")', doc, NaN]
         ].forEach(function(t) {
             var result = documentEvaluate(t[0], t[1], null, win.XPathResult.NUMBER_TYPE, null);
-                        // rounding error on Travis
-            expect(Math.round(result.numberValue * Math.pow(10,15))/Math.pow(10,15)).to.deep.equal(t[2]);
+            // rounding error on Travis
+            expect(Math.round(result.numberValue * Math.pow(10, 15)) / Math.pow(10, 15)).to.deep.equal(t[2]);
         });
     });
 
@@ -578,7 +584,7 @@ describe('Custom "OpenRosa" functions', function() {
         });
     });
 
-     it('sqrt()', function() {
+    it('sqrt()', function() {
         [
             ['sqrt(4)', doc, 2],
             ['sqrt(-2)', doc, NaN],
