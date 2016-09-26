@@ -4506,7 +4506,7 @@ var XPathJS = (function(){
 
 			uuid: {
 				/**
-				 * The uuid function returns an RFC 1422 Version 4 UUID string.
+				 * The uuid function returns an RFC 4122 Version 4 UUID string.
 				 * 
 				 * @see http://opendatakit.org/help/form-design/binding/
 				 * @return {StringType}
