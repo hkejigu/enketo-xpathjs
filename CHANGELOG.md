@@ -2,6 +2,11 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
+[1.3.3] - 2016-11-04
+--------------------
+##### Fixed
+- Max() gets stuck in infinite loop when used with multiple nodeset arguments.
+
 [1.3.2] - 2016-09-26
 --------------------
 ##### Fixed
