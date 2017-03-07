@@ -184,7 +184,7 @@ describe('Custom "OpenRosa" functions', function() {
         });
     });
 
-    it('datetype comparisons', function() {
+    it('datetype comparisons with explicit date types', function() {
         [
             ["date('2001-12-26') > date('2001-12-25')", true],
             ["date('1969-07-20') < date('1969-07-21')", true],
@@ -249,15 +249,20 @@ describe('Custom "OpenRosa" functions', function() {
         });
 
         [
-            ["10 + date('2012-07-24')", doc, 15555]
+            ["10 + date('2012-07-24')", 15555],
+            ["10 + date-time('2012-07-24')", 15555]
         ].forEach(function(t) {
-            var expr = t[0];
-            var result = documentEvaluate(expr, t[1], helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
-            expect(result.numberValue).to.equal(t[2]);
-            // do the same tests for the alias date-time()
-            expr = expr.replace('date(', 'date-time(');
-            result = documentEvaluate(expr, t[1], helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
-            expect(result.numberValue).to.equal(t[2]);
+            var result = documentEvaluate(t[0], doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.equal(t[1]);
+        });
+
+        [
+            //"today()",
+            //"date(today() + 10)",
+            //"date(10 + today())"
+        ].forEach(function(t) {
+            var result = documentEvaluate(t, doc, helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+            expect(result.stringValue).to.match(/([0-9]{4}\-[0-9]{2}\-[0-9]{2})([T]|[\s])([0-9]){2}:([0-9]){2}([0-9:.]*)(\+|\-)([0-9]{2}):([0-9]{2})$/);
         });
     });
 

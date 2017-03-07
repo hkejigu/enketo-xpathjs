@@ -1843,7 +1843,7 @@ var XPathJS = (function(){
 	//maybe the string should be build 'manually' with milliseconds appended to it
 	//more in line with JavaRosa
 	DateType.prototype.toString = function(){
-		return new Date(this.value).toUTCString();
+		return new Date(this.value).toISOLocalString();
 	}
 	//gets milliseconds since epoch
 	DateType.prototype.toNumber = function(){

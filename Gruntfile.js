@@ -28,6 +28,7 @@ module.exports = function(grunt) {
         concat: {
             dist: {
                 src: [
+                    'src/utils.js',
                     'src/engine.js',
                     'dist/parser.js',
                     'src/umd.js'
@@ -73,4 +74,3 @@ module.exports = function(grunt) {
         'uglify:dist'
     ]);
 };
-
