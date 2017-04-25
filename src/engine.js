@@ -5345,11 +5345,35 @@ var XPathJS = (function(){
 				],
 
 				ret: 'number'
-			}
+			},
+
+			'ends-with': {
+				/**
+				 * The ends-with function returns true if the first argument string
+				 * ends with the second argument string, and otherwise returns false.
+				 *
+				 * An alternative (faster?) would be to reverse the first argument and use starts-with (in Enketo Core)?
+				 *
+				 * @see https://www.w3.org/TR/xpath-functions-30/#func-ends-with
+				 * @param {StringType} haystack
+				 * @param {StringType} needle
+				 * @return {StringType}
+				 */
+				fn: function(haystack, needle)
+				{
+					return new BooleanType(haystack.toString().substr(haystack.toString().length - needle.toString().length) === needle.toString());
+				},
+				
+				args: [
+					{t: 'string'},
+					{t: 'string'}
+				],
+				
+				ret: 'string'
+			},
 
 			/**
-			 * The indexed-repeat function... should be used as little as possible
-			 * THIS FUNCTION DOESN'T WORK NICELY WITH POSITION-INJECTION INSIDE REPEATS
+			 * MOVED TO ENKETO-CORE WHERE IT TRANSFORMED INTO REGULAR XPATH
 			 *
 			 * @param { NodeSetType} nodeset 	 	Collection of nodes of which to select one
 			 * @param { NodeSetType} r1,r2,r3,r4,r5 The repeat nodes 
