@@ -721,6 +721,18 @@ describe('Custom "OpenRosa" functions', function() {
         expect(test).to.throw(win.Error);
     });
 
+    it('abs', function(){
+        [
+            ['abs(10.5)', 10.5],
+            ['abs(-10.5)', 10.5],
+            ['abs("-10.5")', 10.5],
+            ['abs("a")', NaN],
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], doc, null, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[1]);
+        });
+    });
+
     /*
      This function is now supported by translating it into regular XPath before passing to this evaluator.
     it('indexed-repeat()', function() {

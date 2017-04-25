@@ -6,6 +6,7 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 --------------------
 ##### Added
 - Ends-with() support.
+- Abs() support.
 
 [1.4.0] - 2017-03-07
 --------------------

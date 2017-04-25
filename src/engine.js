@@ -5372,6 +5372,26 @@ var XPathJS = (function(){
 				ret: 'string'
 			},
 
+			abs: {
+				/**
+				 * Returns the absolute value of the argument.
+				 *
+				 * @see https://www.w3.org/TR/xpath-functions-30/#func-abs
+				 * @param {NumberType} 
+				 * @return {NumberType}
+				 */
+				fn: function(number)
+				{
+					return new NumberType(Math.abs(number));
+				},
+				
+				args: [
+					{t: 'number'}
+				],
+				
+				ret: 'number'
+			},
+
 			/**
 			 * MOVED TO ENKETO-CORE WHERE IT TRANSFORMED INTO REGULAR XPATH
 			 *
