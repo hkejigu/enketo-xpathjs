@@ -8,6 +8,9 @@ This project adheres to [Semantic Versioning](http://semver.org/).
 - Ends-with() support.
 - Abs() support.
 
+##### Fixed
+- Negative int() conversion incorrect.
+
 [1.4.0] - 2017-03-07
 --------------------
 ##### Added

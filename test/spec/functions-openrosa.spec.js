@@ -321,6 +321,8 @@ describe('Custom "OpenRosa" functions', function() {
             ["int('2.1')", 2],
             ["int('2.51')", 2],
             ["int(1 div 47999799999)", 0], //(2.08e-11)
+            ["int(-1.4)", -1],
+            ["int(-1.51)", -1]
         ].forEach(function(t) {
             result = documentEvaluate(t[0], doc, null, win.XPathResult.NUMBER_TYPE);
             expect(result.numberValue).to.equal(t[1]);
