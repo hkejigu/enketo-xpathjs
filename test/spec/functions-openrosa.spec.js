@@ -570,8 +570,7 @@ describe('Custom "OpenRosa" functions', function() {
 
     it('log10()', function() {
         [
-            // note this has a tiny rounding error because Math.log10 is not supported in PhantomJS
-            ['log10(2)', doc, 0.30102999566398114],
+            ['log10(2)', doc, 0.3010299956639812],
             ['log10("NaN")', doc, NaN],
             ['log10("a")', doc, NaN],
         ].forEach(function(t) {
@@ -723,7 +722,7 @@ describe('Custom "OpenRosa" functions', function() {
         expect(test).to.throw(win.Error);
     });
 
-    it('abs', function(){
+    it('abs', function() {
         [
             ['abs(10.5)', 10.5],
             ['abs(-10.5)', 10.5],
