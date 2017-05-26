@@ -200,6 +200,21 @@
 
 		<div id="FunctionWeightedChecklist">3</div>
 
+
+		<div id="FunctionCountNonEmpty">
+			<div>-5</div>
+			<div>-15</div>
+			<div></div>
+			<p>
+				<div></div>
+				<div><!--comment--></div>
+				<span>  </span>
+				<span>  
+				</span>
+			</p>
+			<p></p>
+		</div>
+
 		<!-- *****************************-->
 
 		

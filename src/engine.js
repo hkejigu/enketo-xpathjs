@@ -4002,33 +4002,32 @@ var XPathJS = (function(){
 			//},
 
 			/********************************************************************/	
-			/**** JAVAROSA-specific XPath functions (or XPath 2.0 functions) ****/
+			/**** OpenRosa-specific XPath functions (or XPath 2.0 functions) ****/
 			/********************************************************************/
 
-			sum_jr: {
+			'count-non-empty': {
 				/**
-				 * The JavaRosa version of the sum function is the same as the XPath 1.0 function
-				 * EXCEPT that it evaluates an empty node ('') to 0 instead of NaN.
-				 * @obsolete
-				 * @see 
-				 * @param {NodeSetType} 
+				 * The count-non-empty function returns the number of non-empty nodes in argument node-set. 
+				 * A node is considered non-empty if it is convertible into a string with a greater-than zero length.
+				 *
+				 * @see https://www.w3.org/TR/2003/REC-xforms-20031014/slice7.html#fn-count-non-empty
+				 * @param {NodeSetType} nodeset
 				 * @return {NumberType}
 				 */
 				fn: function(nodeset)
 				{
-					var i, value
-						sum = 0;
-					;
-					
+					var i;
+					var count=0;
+
 					nodeset = nodeset.toNodeSet();
-					
-					for(i = 0; i < nodeset.length; i++)
-					{
-						value = ( nodeStringValue(nodeset[i]) == '' ) ? '0' : nodeStringValue(nodeset[i]);
-						sum += (new StringType(value)).toNumber();
+
+					for ( i=0 ; i < nodeset.length ; i++){
+						if ((new StringType(nodeStringValue(nodeset[i]))).toString().length > 0) {
+							count++;
+						}
 					}
-					
-					return new NumberType(sum);
+
+					return new NumberType(count);
 				},
 				
 				args: [
@@ -4037,7 +4036,6 @@ var XPathJS = (function(){
 				
 				ret: 'number'
 			},
-
 
 			position: {
 				/**

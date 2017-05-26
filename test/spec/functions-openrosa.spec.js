@@ -734,6 +734,36 @@ describe('Custom "OpenRosa" functions', function() {
         });
     });
 
+    it('count-non-empty', function() {
+        [
+            ['count-non-empty(//xhtml:div[@id="FunctionCountNonEmpty"]/xhtml:div)', 2],
+            ['count-non-empty(//xhtml:div[@id="FunctionCountNonEmpty"]/xhtml:p)', 1],
+            ['count-non-empty(//xhtml:div[@id="FunctionCountNonEmpty"]/xhtml:p/xhtml:div)', 0],
+            ['count-non-empty(//xhtml:div[@id="FunctionCountNonEmpty"]/xhtml:p/xhtml:span)', 2],
+            ['count-non-empty(//xhtml:div[@id="FunctionCountNonEmpty"]//*)', 5],
+            ['count-non-empty(//xhtml:div[@id="NoExist"]/xhtml:div)', 0],
+            
+        ].forEach(function(t) {
+            var result = documentEvaluate(t[0], doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+            expect(result.numberValue).to.deep.equal(t[1]);
+        });
+    });
+
+    it('count-non-empty fails when too few, too many, or incorrect arguments are provided', function() {
+        [
+            'count-non-empty()',
+            'count-non-empty(2)',
+            'count-non-empty(0)', 
+            'count-non-empty("a")',
+        ].forEach(function(t) {
+            var test = function(){
+                documentEvaluate(t, doc, helpers.xhtmlResolver, win.XPathResult.NUMBER_TYPE, null);
+            };
+            expect(test).to.throw(win.Error);
+        });
+        
+    });
+
     /*
      This function is now supported by translating it into regular XPath before passing to this evaluator.
     it('indexed-repeat()', function() {
