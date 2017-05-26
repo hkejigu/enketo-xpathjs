@@ -4,6 +4,10 @@
 'use strict';
 
 module.exports = function(config) {
+
+    // Force timezone for tests, so that datetime conversion results are predictable
+    process.env.TZ = 'America/Denver';
+
     config.set({
 
         // base path that will be used to resolve all patterns (eg. files, exclude)

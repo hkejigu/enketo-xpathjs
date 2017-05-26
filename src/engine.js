@@ -4803,6 +4803,7 @@ var XPathJS = (function(){
 							}
 							return str;
 						};
+					var locale = window ? window.enketoFormLocale : undefined;
 
 					if (!dateO.toBoolean())
 					{
@@ -4810,11 +4811,11 @@ var XPathJS = (function(){
 					}
 
 					props = {
-						'Y' : date.getFullYear(),
+						'Y'	: date.getFullYear(),
 						'y'	: date.getFullYear().toString().substring(2,4),
 						'm'	: intPad((date.getMonth()+1), 2),
-						'n' : date.getMonth()+1,
-						'b'	: ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"][date.getMonth()],
+						'n'	: date.getMonth()+1,
+						'b'	: date.toLocaleDateString( locale, { month: 'short' } ),
 						'd'	: intPad(date.getDate(), 2),
 						'e'	: date.getDate(),
 						'H'	: intPad(date.getHours(), 2),
@@ -4822,7 +4823,7 @@ var XPathJS = (function(){
 						'M'	: intPad(date.getMinutes(), 2),
 						'S'	: intPad(date.getSeconds(), 2),
 						'3'	: intPad(date.getMilliseconds(), 3),
-						'a' : ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"][date.getDay()]
+						'a'	: date.toLocaleDateString( locale, { weekday: 'short' } )
 					}
 
 					for (prop in props)

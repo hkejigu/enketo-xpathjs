@@ -1,4 +1,4 @@
-/* global define, describe, xdescribe, require, it, xit, before, after, beforeEach, afterEach, expect, Blob, doc, win, docEvaluate, documentEvaluate, window, loadXMLFile, helpers, XPathJS*/
+/* global define, document, describe, xdescribe, require, it, xit, before, after, beforeEach, afterEach, expect, Blob, doc, win, docEvaluate, documentEvaluate, window, loadXMLFile, helpers, XPathJS*/
 'use strict';
 
 describe('Custom "OpenRosa" functions', function() {
@@ -279,8 +279,8 @@ describe('Custom "OpenRosa" functions', function() {
         });
     });
 
-    //these tests are somewhat tricky as they need to be time-zone independent!
-    it('format-date', function() {
+    // Karma config is setting timezone to America/Denver
+    it('format-date()', function() {
         var
             date = new Date();
         [
@@ -293,14 +293,34 @@ describe('Custom "OpenRosa" functions', function() {
             ["format-date('not a date', '%M')", doc, 'Invalid Date'],
             //["format-date('Mon, 02 Jul 2012 00:00:00 GMT', )", doc, '']
             // the test below probably only works in the GMT -6 timezone...
-            //["format-date(., '%Y | %y | %m | %n | %b | %d | %e | %H | %h | %M | %S | %3 | %a')", doc.getElementById("FunctionDateCase5"),
-            //   '2012 | 12 | 08 | 8 | Aug | 08 | 8 | 06 | 6 | 07 | 08 | 123 | Wed'
-            //]
+            ["format-date(., '%Y | %y | %m | %n | %b | %d | %e | %H | %h | %M | %S | %3 | %a')", doc.getElementById("FunctionDateCase5"),
+               '2012 | 12 | 08 | 8 | Aug | 08 | 8 | 06 | 6 | 07 | 08 | 123 | Wed'
+            ],
         ].forEach(function(t) {
             var expr = t[0];
             var result = documentEvaluate(expr, t[1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
             expect(result.stringValue).to.equal(t[2]);
-            // do the same tests for the alias format-date-string()
+            // do the same tests for the alias format-date-time()
+            expr = expr.replace('format-date', 'format-date-time');
+            result = documentEvaluate(expr, t[1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+            expect(result.stringValue).to.equal(t[2]);
+        });
+    });
+
+    // Karma config is setting timezone to America/Denver
+    it('format-date() - locale dependent', function() {   
+        [
+            ["format-date('2017-05-26T00:00:01-06:00', '%a %b')", doc, 'Fri May' ],
+            ["format-date('2017-05-26T23:59:59-06:00', '%a %b')", doc, 'Fri May' ],
+            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'Fri May', 'en' ],
+            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'ven. mai', 'fr' ],
+            ["format-date('2017-05-26T01:00:00-06:00', '%a %b')", doc, 'vr mei', 'nl' ],
+        ].forEach(function(t) {
+            document.querySelector('iframe').contentWindow.enketoFormLocale = t[3];
+            var expr = t[0];
+            var result = documentEvaluate(expr, t[1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
+            expect(result.stringValue).to.equal(t[2]);
+            // do the same tests for the alias format-date-time()
             expr = expr.replace('format-date', 'format-date-time');
             result = documentEvaluate(expr, t[1], helpers.xhtmlResolver, win.XPathResult.STRING_TYPE, null);
             expect(result.stringValue).to.equal(t[2]);

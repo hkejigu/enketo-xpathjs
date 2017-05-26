@@ -2,10 +2,13 @@
 All notable changes to this project will be documented in this file.
 This project adheres to [Semantic Versioning](http://semver.org/).
 
-[Unreleased]
+[1.6.0] - 2017-05-26
 --------------------
 ##### Added
 - Count-non-empty() support.
+
+##### Changed
+- Localize %a and $b in format-date().
 
 [1.5.0] - 2017-04-25 
 --------------------
